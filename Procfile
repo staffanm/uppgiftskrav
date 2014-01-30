@@ -1,1 +1,1 @@
-web: gunicorn uppgiftskrav/wsgi.py
+web: gunicorn uppgiftskrav.wsgi:application
