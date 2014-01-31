@@ -9,6 +9,10 @@ class Uppgift(models.Model):
     def __unicode__(self):
         return "%s: %s" % (self.uppgiftid, self.namn)
 
+    class Meta():
+        verbose_name_plural = "Uppgifter"
+        ordering = ["id"]
+
 class Krav(models.Model):
     kravid = models.CharField(max_length=6)
     namn = models.CharField(max_length=255)
@@ -17,10 +21,12 @@ class Krav(models.Model):
     url = models.URLField()
     uppgifter = models.ManyToManyField(Uppgift)
     myndighet = models.ForeignKey(authmodels.Group)
-
+        
     def __unicode__(self):
         return "%s: %s" % (self.kravid, self.namn)
 
-
+    class Meta():
+        verbose_name_plural = "Krav"
+        ordering = ["id"]
 
     
