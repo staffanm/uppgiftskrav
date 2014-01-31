@@ -86,7 +86,7 @@ STATICFILES_DIRS = (
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'sv_'
+LANGUAGE_CODE = 'sv_SE'
 
 TIME_ZONE = 'CET'
 
