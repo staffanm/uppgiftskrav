@@ -11,9 +11,9 @@ class Uppgift(models.Model):
 
 class Krav(models.Model):
     kravid = models.CharField(max_length=6)
-    namn = models.CharField(max_length=100)
+    namn = models.CharField(max_length=255)
     beskrivning = models.TextField()
-    lagrum = models.CharField(max_length=60)
+    lagrum = models.CharField(max_length=255)
     url = models.URLField()
     uppgifter = models.ManyToManyField(Uppgift)
     myndighet = models.ForeignKey(authmodels.Group)
