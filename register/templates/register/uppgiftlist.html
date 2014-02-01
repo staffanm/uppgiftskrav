@@ -1,0 +1,6 @@
+<h1>Alla {{ uppgift_list.count }} grundläggande uppgifter</h1>
+<ul>
+    {% for uppgift in uppgift_list %}
+        <li><a href="{% url 'uppgift' uppgift.uppgiftid %}">{{ uppgift.uppgiftid }}: {{ uppgift.namn }}</a></li>
+    {% endfor %}
+    </ul>
