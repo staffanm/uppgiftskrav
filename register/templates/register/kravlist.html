@@ -1,6 +1,18 @@
 <h1>Alla {{ krav_list.count }} uppgiftskrav</h1>
+
+<h2>Krav per myndighet</h2>
+<img src="{% url 'register:img_krav_by_myndighet' %}"/>
+   <!--
+    <ul>
+      {% for mynd in mynd_list %}
+      <li><a href="...">{{ mynd.name }}</a>: {{mynd.krav__count}} uppgiftskrav</li>
+      {% endfor %}
+    </ul>
+    -->
+    <h2>Hela listan</h2>
+
     <ul>
     {% for krav in krav_list %}
-        <li><a href="/db/krav/{{ krav.kravid }}">{{ krav.kravid }}: {{ krav.namn }}</a></li>
+        <li><a href="{% url 'register:krav' krav.kravid %}">{{ krav.kravid }}: {{ krav.namn }}</a></li>
     {% endfor %}
     </ul>

@@ -3,7 +3,7 @@
 <h3>Används i {{ uppgift.krav_set.count }} krav</h3>
 <ul>
   {% for krav in uppgift.krav_set.all %}
-  <li><a href="/db/krav/{{ krav.kravid }}">{{ krav }}</a></li>
+  <li><a href="{% url 'register:krav' krav.kravid %}">{{ krav }}</a></li>
   {% endfor %}
 </ul>
   

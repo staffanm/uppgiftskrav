@@ -5,7 +5,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
                        # Examples:
-                       url(r'^db/', include('register.urls')),
+                       url(r'^db/', include('register.urls', namespace='register')),
                        url(r'^admin/', include(admin.site.urls))
                        )
 

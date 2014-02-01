@@ -97,7 +97,7 @@ def make_fixture(newdata, olddata, fixture):
         data.append({'model': 'auth.group', # 'django.contrib.auth.models.Group',
                      'pk': m['id'],
                      'fields': {'name': m['name'],
-                                'permissions': []}
+                                'permissions': [22,23,24]}  # 'codename': 'add_krav', 'change_krav', 'delete_krav'
                      })
                             
     for u in uppgift.values():
