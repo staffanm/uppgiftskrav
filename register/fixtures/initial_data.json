@@ -4,7 +4,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "F\u00f6retagsdatan\u00e4mnden", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -12,7 +16,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "F\u00f6rs\u00e4kringskassan", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -20,7 +28,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Kronofogdemyndigheten", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -28,7 +40,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Arbetsf\u00f6rmedlingen", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -36,7 +52,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Bolagsverket", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -44,7 +64,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Livsmedelsverket", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -52,7 +76,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "SCB", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -60,7 +88,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Skogsstyrelsen", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -68,7 +100,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Tillv\u00e4xtverket", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -76,7 +112,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Trafikanalys", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -84,7 +124,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Trafikverket", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -92,7 +136,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Tullverket", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -100,7 +148,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Skatteverket", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -108,7 +160,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Transportstyrelsen", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
@@ -116,7 +172,11 @@
         "model": "auth.group", 
         "fields": {
             "name": "Jordbruksverket", 
-            "permissions": []
+            "permissions": [
+                22, 
+                23, 
+                24
+            ]
         }
     }, 
     {
