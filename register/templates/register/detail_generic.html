@@ -2,7 +2,13 @@
 
 {% block title %} {{object}} {% endblock %}
 
+{% load register_extras %}
 {% block content %}
+{% if validation_errors %}
+    <div class="alert alert-danger">
+      Det finns problem med informationen om uppgiftskravet -- se de rödmarkerade raderna nedan!
+    </div>
+{% endif %}
 <table class="table table-condensed table-hover">
   <thead>
     <tr>
@@ -16,8 +22,14 @@
 	<strong title="{{field.name}}">{{field.verbose_name}}</strong><br>
 	<small>{{field.help_text}}</small>
       </td>
-      <td>{{value|linebreaks}}</td>
-      
+      <td>{{value|swedify:field|linebreaks}}
+      {% if validation_errors|getitem:field.name %}
+	<p class="alert alert-danger">
+	{{validation_errors|getitem:field.name|first}}
+	</p>
+      {% endif %}
+      </td>
+    </tr>
 {% endfor %}
   </tbody>
 </table>

@@ -1,11 +1,10 @@
 from django.shortcuts import render
 
 from django.http import HttpResponse
-from django.template import RequestContext, loader
-from django.shortcuts import render, get_object_or_404
 from django.db.models import Count
 from django.views.generic import TemplateView, ListView, DetailView
 from django.contrib.auth.models import Group as Myndighet
+from django.core.exceptions import ValidationError
 
 
 from register.models import Uppgift, Krav, Verksamhetsomrade, Bransch, Foretagsform
@@ -72,6 +71,13 @@ class KravList(MyListView):
 class KravDetail(MyDetailView):
     model = Krav
     slug_field = "kravid"
+    def get_context_data(self, **kwargs):
+        context = super(KravDetail, self).get_context_data(**kwargs)
+        try:
+            self.object.full_clean()
+        except ValidationError as e:
+            context['validation_errors'] = e.message_dict
+        return context
 
 class UppgiftList(MyListView):
     model = Uppgift

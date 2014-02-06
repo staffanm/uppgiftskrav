@@ -123,14 +123,23 @@ class Krav(models.Model):
     objects = KravManager()
     OKANT = -1
 
-    def no_unknowns(value):
-        if value == -1:
-            raise ValidationError("Värdet ska inte vara 'Okänt'")
-
     def not_empty(value):
         if not value:
             raise ValidationError("Värdet får inte vara tomt")
+
+    def not_empty_list(value):
+        if not value.all():
+            raise ValidationError("Måste ange ett eller flera möjliga val")
+
+    def not_null(value):
+        if value is None:
+            raise ValidationError("Antingen Ja eller Nej måste anges")
+
+    def not_null_integer(value):
+        if value is None:
+            raise ValidationError("Ett tal måste anges")
     
+
     verksamhetsomrade = fk(Verksamhetsomrade,
                            blank=True,
                            null=True,
@@ -198,7 +207,8 @@ class Krav(models.Model):
                 paragraf, stycke (t ex SJFS1995:94 15).
 
                 Om det inte går att avgöra primärt författningsstöd
-                åtskilj med semikolon (;).""")
+                åtskilj med semikolon (;).""",
+                validators=[not_empty])
 
     NATIONELLT=1
     EU=2
@@ -213,29 +223,34 @@ class Krav(models.Model):
                      Om beskrivningen är fel ska den inte ändras
                      här. Skriv istället under Kort beskrivning av
                      uppgiftskravet.""")
+
     anteckning = tf(editable=False,
                     blank=True,
                     help_text="""Anteckning om uppgiftskravet. 
 
                     Ska inte ändras.""")
+
     kortbeskrivning = tf("Kort beskrivning av uppgiftskravet",
                          max_length=140,
                          help_text="""Anvisning: Beskriv kortfattat vad uppgiftskravet avser så att
                          näringsidkare/företag förstår vad som ska
                          göras och om det berör dem. Max 140 tecken
-                         inkl mellanslag.""",
-                         validators=[not_empty])
+                         inkl mellanslag.""")
 
     leder_till_insamling = nbf("Leder till insamling från företag",
                                help_text="""Anvisning: Ange Ja om det är ett uppgiftskrav.
-                               Ange Nej om det inte är ett uppgiftskrav.""")
+                               Ange Nej om det inte är ett uppgiftskrav.""",
+                               validators=[not_null])
 
     egna_noteringar = tf(blank=True,
                          help_text="""Anvisning: Ange egna noteringar i denna cell vid behov.
     
                          Noteringar från kartläggningens kolumn
                          Upphört? ligger i denna kolumn.""")
-    kalenderstyrt = nbf(help_text="""Ange om uppgiften lämnas in utifrån förutbestämd tidpunkt.""")
+
+    kalenderstyrt = nbf(help_text="""Ange om uppgiften lämnas in utifrån förutbestämd tidpunkt.""",
+                        validators=[not_null],
+    )
 
     INTE_RELEVANT=0
     JANUARI=1
@@ -272,7 +287,8 @@ class Krav(models.Model):
                       Välj ett av värdena i listan. Vid t ex årlig uppgift, ange när på året.""")
 
     handelsestyrt = nbf("Händelsestyrt",
-                        help_text="""Ange om uppgiften lämnas in utifrån händelse.""")
+                        help_text="""Ange om uppgiften lämnas in utifrån händelse.""",
+                        validators=[not_null])
 
     MYNDIGHETSINITIERAT=1
     FORETAGSINITIERAT=2
@@ -290,8 +306,7 @@ class Krav(models.Model):
 
                           Företagsinitierat - om myndigheten inte vet om
                           vad företaget ska göra. Exempel: Anmälan till
-                            potatisregistret.""",
-                            validators=[no_unknowns])
+                            potatisregistret.""")
 
     ovrigt_nar = tf("Övrigt (När)",
                     blank=True,
@@ -307,9 +322,11 @@ class Krav(models.Model):
                   mellanslag.
 
                   Om uppgiftskravet inte berör specifik bransch, skriv
-                  bokstaven X (avser alla) i cellen.""")
+                  bokstaven X (avser alla) i cellen.""",
+                  validators=[not_empty_list])
 
-    arbetsgivare = nbf(help_text="""Ange om uppgiftskravet endast berör arbetsgivare.""")
+    arbetsgivare = nbf(help_text="""Ange om uppgiftskravet endast berör arbetsgivare.""",
+                       validators=[not_null])
 
     foretagsform = m2m(Foretagsform,
                        help_text="""Om uppgiftskravet endast berör specifika företagsformer, ange
@@ -321,11 +338,13 @@ class Krav(models.Model):
                        
                        Om uppgiftskravet inte berör specifika
                        företagsformer, skriv bokstaven X (avser alla)
-                       i cellen.""")
+                       i cellen.""",
+                       validators=[not_empty_list])
 
     storlek = nbf(blank=True,
                   help_text="""Ange om uppgiftskravet endast berör företag eller produktion av
-                  viss storlek.""")
+                  viss storlek.""",
+                  validators=[not_null])
 
     storlekskriterier = tf(blank=True,
                            help_text="""Ange storlekskriterier om du svarat Ja i kolumnen Storlek (t ex
@@ -344,7 +363,7 @@ class Krav(models.Model):
                                 helst laghänvisning t ex SFS 1995:1554
                                 9 1""")
 
-    antal_foretag = intf("Omfattade företag",
+    antal_foretag = intf("Antal omfattade företag",
                          blank=True,
                          null=True,
                          help_text="""Anvisning:
@@ -355,19 +374,23 @@ class Krav(models.Model):
 
                              Ombud avses inte.
 
-                             Skriv svaret med siffror i cellen.""")
+                             Skriv svaret med siffror i cellen.""",
+                         validators=[not_null_integer])
 
     annan_ingivare = nbf(help_text="""Ange om uppgifter som rör uppgiftskravet kan lämnas av ombud för
                          näringsidkaren/företaget (alltså någon som
-                         har fullmakt och inte är anställd).""")
+                         har fullmakt och inte är anställd).""",
+                         validators=[not_null])
 
-    underskrift = nbf(help_text="""Kräver uppgiftsinlämningen underskrift (på papper eller elektroniskt)?""")
+    underskrift = nbf(help_text="""Kräver uppgiftsinlämningen underskrift (på papper eller elektroniskt)?""",
+                      validators=[not_null])
 
     etjanst = nbf(help_text="""Har ni en e-tjänst som kan användas för insamling av uppgiftskravet
                   (dvs tjänst som möjliggör automatiserad behandling
                   av uppgifterna)?  Här avses även
                   maskin-till-maskin-koppling men inte t ex
-                  pdf-blankett som måste skrivas ut.""")
+                  pdf-blankett som måste skrivas ut.""",
+                  validators=[not_null])
 
     ENDAST_ETJANST=0
     INGEN_INFO_TILLGANGLIG=1
@@ -428,7 +451,7 @@ class Krav(models.Model):
                             null=True,
                             help_text="""Angiven volym i kartläggning som genomfördes våren 2012.
 
-                         Ska inte ändras.""")
+                            Ska inte ändras.""")
 
     volymer_2012 = intf("Volymer 2012",
                         blank=True,
@@ -436,21 +459,23 @@ class Krav(models.Model):
                         help_text="""Hur många ärenden t ex anmälningar, ansökningar, undersökningar
                         etc lämnades totalt in år 2012 för detta uppgiftskrav?
 
-                     Skriv svaret med siffror i cellen.""")
+                        Skriv svaret med siffror i cellen.""",
+                        validators=[not_null_integer])
 
     volymer_etjanst = intf("Varav volymer e-tjänst",
                            blank=True,
                            null=True,
                         help_text="""Hur många ärenden t ex anmälningar, ansökningar, undersökningar etc
                         lämnades in via e-tjänst år 2012 för detta
-                        uppgiftskrav?""")
+                        uppgiftskrav?""",
+                           validators=[not_null_integer])
 
     ovrigt_hur = tf("Övrigt (Hur)",
                     blank=True,
                     help_text="""Finns det övrig relevant information om hur uppgiften samlas in?""")
 
     url = models.URLField(blank=True) # link to etjänst
-    uppgifter = models.ManyToManyField(Uppgift, blank=True)
+    uppgifter = models.ManyToManyField(Uppgift, blank=True, validators=[not_empty_list])
 
     def __unicode__(self):
         return "%s: %s" % (self.kravid, self.namn)
