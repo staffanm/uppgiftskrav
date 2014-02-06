@@ -1,0 +1,4 @@
+{% extends "register/list_generic.html" %}
+
+{% block objecttype %} myndigheter {% endblock %}
+{% block objectitem %} <a href="{% url 'register:myndighet-detail' object.id %}">{{ object }}</a></li> {% endblock %}

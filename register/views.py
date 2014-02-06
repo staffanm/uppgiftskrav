@@ -4,17 +4,15 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Count
-
-from register.models import Uppgift, Krav
+from django.views.generic import TemplateView, ListView, DetailView
 from django.contrib.auth.models import Group as Myndighet
+
+
+from register.models import Uppgift, Krav, Verksamhetsomrade, Bransch, Foretagsform
+
 def index(request):
     return render(request, "register/index.html")
 
-def kravlist(request):
-    return render(request, "register/kravlist.html",
-                  {'krav_list':Krav.objects.order_by('kravid'),
-                   'mynd_list':Myndighet.objects.annotate(Count('krav')).order_by('-name')
-               })
 
 def _get_plot():
     # returns a subplot connected to a figure connected to a canvas
@@ -33,11 +31,11 @@ def _serve_plot(canvas):
     
 def img_krav_by_myndighet(request):
     # get data
-    q = Myndighet.objects.annotate(Count('krav')).order_by('-name')
-    labels = [x.name for x in q if x.krav__count]
-    sizes = [x.krav__count for x in q if x.krav__count]
-    # maxkrav = max([x.krav__count for x in q])
-    # explode = [(maxkrav - x.krav__count) / float(maxkrav*10) for x in q if x.krav__count]
+    q = Myndighet.objects.annotate(Count('ansvarig_for')).order_by('-name')
+    labels = [x.name for x in q if x.ansvarig_for__count]
+    sizes = [x.ansvarig_for__count for x in q if x.ansvarig_for__count]
+    # maxansvarig_for = max([x.ansvarig_for__count for x in q])
+    # explode = [(maxansvarig_for - x.ansvarig_for__count) / float(maxansvarig_for*10) for x in q if x.ansvarig_for__count]
     # print(explode)
 
     # draw data
@@ -60,19 +58,61 @@ def img_krav_by_uppgift(request):
     ax.set_xlabel("Uppgift")
     ax.set_ylabel("Antal")
     return _serve_plot(canvas)
-    
-def krav(request, kravid):
-    k = get_object_or_404(Krav, kravid=kravid)
-    return render(request, "register/krav.html", {'krav':k})
 
 
-def uppgift(request, uppgiftid):
-    u = get_object_or_404(Uppgift, uppgiftid=uppgiftid)
-    return render(request, "register/uppgift.html", {'uppgift':u})
+class MyListView(ListView):
+    paginate_by = 100
 
-def uppgiftlist(request):
-    return render(request, "register/uppgiftlist.html",
-                  {'uppgift_list':Uppgift.objects.order_by('uppgiftid')})
-    
+class MyDetailView(DetailView):
+    pass
 
-    
+class KravList(MyListView):
+    model = Krav
+
+class KravDetail(MyDetailView):
+    model = Krav
+    slug_field = "kravid"
+
+class UppgiftList(MyListView):
+    model = Uppgift
+
+class UppgiftDetail(MyDetailView):
+    model = Uppgift
+    slug_field = "uppgiftid"
+
+class BranschList(MyListView):
+    model = Bransch
+
+class BranschDetail(MyDetailView):
+    model = Bransch
+    slug_field = "snikod"
+
+class ForetagsformList(MyListView):
+    model = Foretagsform
+
+class ForetagsformDetail(MyDetailView):
+    model = Foretagsform
+    slug_field = "formkod"
+
+class VerksamhetsomradeList(MyListView):
+    model = Verksamhetsomrade
+
+class VerksamhetsomradeDetail(MyDetailView):
+    model = Verksamhetsomrade
+
+class MyndighetList(MyListView):
+    model = Myndighet
+    template_name = "register/myndighet_list.html" # override default auth/group_list.html
+
+class MyndighetDetail(MyDetailView):
+    model = Myndighet
+    template_name = "register/myndighet_detail.html" # override default auth/group_detail.html
+
+class IndexView(TemplateView):
+    template_name = "register/index.html"
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context.update({'krav_cnt': Krav.objects.count(),
+                        'uppgift_cnt': Uppgift.objects.count(),
+                        'myndighet_cnt': Myndighet.objects.count()})
+        return context    

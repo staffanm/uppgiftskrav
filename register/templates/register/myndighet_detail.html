@@ -1,0 +1,11 @@
+{% extends "register/detail_generic.html" %}
+
+{% block title %} {{object}} <small> {{ object.ansvarig_for.count }} uppgiftskrav</small> {% endblock %}
+
+{% block content %}
+<ul>
+{% for krav in object.ansvarig_for.all %}
+<li><a href="{{krav.get_absolute_url }}">{{krav}}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

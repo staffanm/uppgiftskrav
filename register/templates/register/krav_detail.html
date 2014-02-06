@@ -1,0 +1,29 @@
+{% extends "register/detail_generic.html" %}
+
+
+{% block leftgrid %}
+<h2>Uppgifter</h2>
+<ul>
+  {% for uppgift in krav.uppgifter.all %}
+  <li><a href="{% url 'register:uppgift-detail' uppgift.uppgiftid %}">{{ uppgift }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
+{% block centergrid %}
+<h2>Branscher</h2>
+<ul>
+  {% for bransch in krav.bransch.all %}
+  <li><a href="{% url 'register:bransch-detail' bransch.snikod %}">{{ bransch }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
+{% block rightgrid %}
+<h2>Företagsformer</h2>
+<ul>
+  {% for form in krav.foretagsform.all %}
+  <li><a href="{% url 'register:form-detail' form.formkod %}">{{ form }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,8 +1,0 @@
-<h1>Alla {{ uppgift_list.count }} grundläggande uppgifter</h1>
-<h2>Antal krav varje uppgift ingår i</h2>
-<img src="{% url 'register:img_krav_by_uppgift' %}"/>
-<ul>
-    {% for uppgift in uppgift_list %}
-        <li><a href="{% url 'register:uppgift' uppgift.uppgiftid %}">{{ uppgift.uppgiftid }}: {{ uppgift.namn }}</a></li>
-    {% endfor %}
-    </ul>

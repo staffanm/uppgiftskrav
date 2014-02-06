@@ -1,0 +1,24 @@
+{% extends "register/base_generic.html" %}
+
+{% block title %} {{object}} {% endblock %}
+
+{% block content %}
+<table class="table table-condensed table-hover">
+  <thead>
+    <tr>
+      <th>Fält</th> <th>Värde</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for field, value in object %}
+    <tr>
+      <td>
+	<strong title="{{field.name}}">{{field.verbose_name}}</strong><br>
+	<small>{{field.help_text}}</small>
+      </td>
+      <td>{{value|linebreaks}}</td>
+      
+{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

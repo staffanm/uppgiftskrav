@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %} {% bootstrap_javascript %}
+  </head>
+  <body>
+    <div class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span> <!-- ?? -->
+          </button>
+          <a class="navbar-brand" href="{% url 'register:index' %}">Uppgiftskravsregistret</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+	    <!-- use class="active" for currently active nav -->
+            <li><a href="{% url 'register:krav-list' %}">Krav</a></li>
+            <li><a href="{% url 'register:uppgift-list' %}">Uppgifter</a></li>
+            <li><a href="{% url 'register:myndighet-list' %}">Myndigheter</a></li>
+            <li><a href="{% url 'register:bransch-list' %}">Branscher</a></li>
+            <li><a href="{% url 'register:form-list' %}">Företagsformer</a></li>
+	    {% if not user.is_authenticated %}
+            <li><a href="/admin/ %}">Logga in</a></li>
+	    {% endif %}
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    {% bootstrap_messages %}
+    <div class="container">
+      <h1>{% block title %}Generic title{% endblock %}</h1>
+      {% block content %}
+      <p>The amazing content goes here</p>
+      {% endblock %}
+    </div>
+    <div class="container">
+      <div class="row">
+	<div class="col-md-4">
+	  {% block leftgrid %}
+	  <h2>leftgrid</h2>
+	  <p>Text goes here</p>
+	  {% endblock %}
+	</div>
+	<div class="col-md-4">
+	  {% block centergrid %}
+	  <h2>centergrid</h2>
+	  <p>Text goes here</p>
+	  {% endblock %}
+	</div>
+	<div class="col-md-4">
+	  {% block rightgrid %}
+	  <h2>rightgrid</h2>
+	  <p>Text goes here</p>
+	  {% endblock %}
+	</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer">
+        <p><a href="http://www.regeringen.se/sb/d/108/a/192585">Uppgiftslämnarutredningen (N 2012:01)</a></p>
+      </div>
+    </div>
+  </body>
+</html>

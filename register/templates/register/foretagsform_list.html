@@ -1,0 +1,4 @@
+{% extends "register/list_generic.html" %}
+
+{% block objecttype %} företagsformer {% endblock %}
+{% block objectitem %} <a href="{% url 'register:form-detail' object.formkod %}">{{ object.formkod }}: {{ object.beskrivning }}</a></li> {% endblock %}

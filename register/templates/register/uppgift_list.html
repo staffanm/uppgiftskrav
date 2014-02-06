@@ -1,0 +1,4 @@
+{% extends "register/list_generic.html" %}
+
+{% block objecttype %} grundläggande uppgifter {% endblock %}
+{% block objectitem %} <a href="{% url 'register:uppgift-detail' object.uppgiftid %}">{{ object.uppgiftid }}: {{ object.namn }}</a></li> {% endblock %}

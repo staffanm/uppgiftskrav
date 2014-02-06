@@ -1,0 +1,4 @@
+{% extends "register/list_generic.html" %}
+
+{% block objecttype %} uppgiftskrav {% endblock %}
+{% block objectitem %} <a href="{% url 'register:krav-detail' object.kravid %}">{{ object.kravid }}: {{ object.namn }}</a></li> {% endblock %}

@@ -1,4 +1,64 @@
-<h1>Uppgiftskravsregistret</h1>
+{% extends "register/base_generic.html" %}
 
-<p><a href="{% url 'register:kravlist' %}">alla krav</a></p>
-<p><a href="{% url 'register:uppgiftlist' %}">alla grundläggande uppgifter</a></p>
+{% block title %}Uppgiftskravsregistret{% endblock %}
+
+{% block content %}
+
+<p class="lead">Detta är en demonstration av ett tänkbart system för
+inrapportering av uppgiftskrav. Det har en publik del där de
+inregistrerade uppgiftskraven kan visas och sammanställas på olika
+sätt, men det centrala är administrationsdelen där myndigheter kan
+registrera sina uppgiftkrav.</p>
+
+{% if user.is_authenticated %}
+<p><a href="/admin/" class="btn btn-primary active">Administrera uppgiftskrav</a></p>
+{% else %}
+<p>Myndigheter som använder systemet för att rapportera in
+uppgiftsgrav måste först logga in.</p>
+<p><a href="/admin/" class="btn btn-primary active">Logga in</a></p>
+{% endif %}
+
+{% endblock %}
+
+
+{% block leftgrid %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+	<a href="{% url 'register:krav-list' %}">
+	  <h3 class="panel-title">Uppgiftskrav
+	    <span class="badge">{{ krav_cnt}}</span></h3>
+	</a>
+      </div>
+      <div class="panel-body">
+	Här är en lista över alla registrerade uppgiftskrav.
+      </div>
+    </div>
+{% endblock %}
+
+{% block centergrid %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+	<a href="{% url 'register:uppgift-list' %}">
+	  <h3 class="panel-title">Grundläggande uppgifter
+	    <span class="badge">{{uppgift_cnt}}</span></h3>
+	</a>
+      </div>
+      <div class="panel-body">
+	Här är en lista över alla grundläggande uppgifter som förekommer i uppgiftskraven.
+      </div>
+    </div>
+{% endblock %}
+
+{% block rightgrid %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+	<a href="{% url 'register:myndighet-list' %}">
+	  <h3 class="panel-title">Myndigheter 
+	    <span class="badge">{{ myndighet_cnt}}</span></h3>
+	</a>
+      </div>
+      <div class="panel-body">
+	Här är en lista över de myndigheter som kartlagt och är ansvariga för uppgiftskraven
+      </div>
+    </div>
+{% endblock %}
