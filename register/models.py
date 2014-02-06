@@ -457,8 +457,8 @@ class Krav(models.Model):
 
     def __iter__(self):
         for i in self._meta.get_all_field_names():
-            if i == "initierande_part":
-                from pudb import set_trace; set_trace()
+            #if i == "initierande_part":
+            #    from pudb import set_trace; set_trace()
             yield (self._meta.get_field(i), getattr(self, i))
 
     def natural_key(self):
