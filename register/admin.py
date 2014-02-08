@@ -24,7 +24,7 @@ admin.site.register(Foretagsform, ForetagsformAdmin)
 
 
 class KravAdmin(admin.ModelAdmin):
-    list_display = ['kravid', 'namn']
+    list_display = ['kravid', 'namn', 'valid']
     list_filter = ['kartlaggande_myndighet', 'leder_till_insamling']
 
     # only show those kravs that the user may edit (based upon the
@@ -34,6 +34,6 @@ class KravAdmin(admin.ModelAdmin):
         qs = super(KravAdmin, self).get_queryset(request)
         if request.user.is_superuser: 
             return qs
-        return qs.filter(myndighet__in=request.user.groups.all())
+        return qs.filter(kartlaggande_myndighet__in=request.user.groups.all())
 
 admin.site.register(Krav, KravAdmin)

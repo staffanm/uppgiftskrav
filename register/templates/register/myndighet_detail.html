@@ -5,7 +5,11 @@
 {% block content %}
 <ul>
 {% for krav in object.ansvarig_for.all %}
-<li><a href="{{krav.get_absolute_url }}">{{krav}}</a></li>
+<li>
+  {% if not krav.valid %}
+     <span style="color: red" class="glyphicon glyphicon-remove"></span>
+  {% endif %}
+  <a href="{{krav.get_absolute_url }}">{{krav}}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}

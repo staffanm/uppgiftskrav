@@ -19,7 +19,9 @@ def myndighet_id(d,key):
 
 def value(row, idx, max_length=None):
     val = row[idx].internal_value
-    if not val:
+    if isinstance(val, float):
+        return unicode(int(val)) # 0.0 -> '0'
+    elif not val:
         return ""
     if not isinstance(val, unicode):
         val = unicode(val)
@@ -36,9 +38,13 @@ def note(row, idx, dictionary):
 
 def choice(row, idx, choices, default=None):
     val = value(row, idx)
-    if val in choices:
-        return choices.index(val)
+    lval = val.lower()
+    lchoices = [x.lower() if hasattr(x,'lower') else x for x in choices ]
+    if lval in lchoices:
+        return lchoices.index(lval)
     else:
+        if val:
+            print("WARNING (%s): %r not in %r" %(row[3].internal_value, val, choices))
         if default is not None: # must be able to be 0 or other falsieness
             return default
         else:
@@ -51,11 +57,12 @@ def integer(row, idx):
     # else return None
 
 def nbf(row, idx):
-    val = value(row, idx)
-    if val:
-        return val == "Ja"
-    else:
-        return None
+    return choice(row, idx, ('Nej', 'Ja'), -1)
+    #val = value(row, idx)
+    #if val:
+    #    return val == "Ja"
+    #else:
+    #    return None
 
 def many(row, idx):
     val = value(row, idx)
@@ -135,9 +142,9 @@ def make_fixture(newdata, olddata, fixture):
                                         'leder_till_insamling': nbf(row, LEDER_TILL_INSAMLING),
                                         'egna_noteringar': value(row, EGNA_NOTERINGAR),
                                         'kalenderstyrt': nbf(row, KALENDERSTYRT),
-                                        'periodicitet': choice(row, PERIODICITET, ('Inte relevant', 'Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'), default=-1),
+                                        'periodicitet': choice(row, PERIODICITET, ('Inte relevant', 'Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December', 'Veckovis', 'Månadsvis', 'Kvartalsvis', 'Årsvis (ej särskilt datum)'), default=-1),
                                         'handelsestyrt': nbf(row, HANDELSESTYRT),
-                                        'initierande_part': choice(row, INITIERANDE_PART, (False, 'Myndighetsinitierat', 'Företagsinitierat', 'Båda'), default=-1),
+                                        'initierande_part': choice(row, INITIERANDE_PART, (False, 'Myndigheten', 'Företaget', 'Båda'), default=-1),
                                         'ovrigt_nar': value(row, OVRIGT_NAR),
                                         'bransch': many(row, BRANSCH),
                                         'arbetsgivare': nbf(row, ARBETSGIVARE),
@@ -150,7 +157,7 @@ def make_fixture(newdata, olddata, fixture):
                                         'underskrift': nbf(row, UNDERSKRIFT),
                                         'etjanst': nbf(row, ETJANST),
                                         'svarighet_ej_etjanst': choice(row, SVARIGHET_EJ_ETJANST, ('0','1','2','3','4'), default=-1),
-                                        'svarighet_etjanst': choice(row, SVARIGHET_ETJANST, ('5','6','7'), default=-1),
+                                        'svarighet_etjanst': choice(row, SVARIGHET_ETJANST, (False, False, False, False, False, '5','6','7'), default=-1),
                                         'volymer_tidigare': integer(row, VOLYMER_TIDIGARE),
                                         'volymer_2012': integer(row, VOLYMER_2012),
                                         'volymer_etjanst': integer(row, VOLYMER_ETJANST),
@@ -329,7 +336,69 @@ def make_fixture(newdata, olddata, fixture):
                                                 ["delete_verksamhetsomrade", "register", "verksamhetsomrade"]]
                                             } 
                      })
-                            
+
+    # add a user for each as well. The passwd is "test"
+    names = {"Företagsdatanämnden": '',
+             "Försäkringskassan": 'dan', 
+             "Kronofogdemyndigheten": 'eva', 
+             "Arbetsförmedlingen": 'clas', 
+             "Bolagsverket": 'helena',
+             "Bokföringsnämnden": 'olle',
+             "Patentombudsnämnden": 'karin', 
+             "Livsmedelsverket": 'stig', 
+             "SCB": 'johan',
+             "Medlingsinstitutet": 'claes', 
+             "Statens energimyndighet": 'erik', 
+             "Tillväxtanalys": 'hjalmarsson', 
+             "Finansinspektionen": 'martin', 
+             "Naturvårdsverket": 'maria', 
+             "Skolverket": 'ekstrom', 
+             "Skogsstyrelsen": 'monika', 
+             "Tillväxtverket": 'anna',
+             "Trafikanalys": 'brita', 
+             "Trafikverket": 'gunnar', 
+             "Tullverket": 'therese', 
+             "Skatteverket": 'lars',
+             "Transportstyrelsen": 'widlert', 
+             "Jordbruksverket": 'leif'}
+    for name, id in myndighet.items():
+        username = names.get(name,
+                             name.replace(" ","").lower())
+        data.append({'model': 'auth.user',
+                     'pk': id,
+                     "fields": {
+                         "username": username,
+                         "first_name": "", 
+                         "last_name": "", 
+                         "is_active": True, 
+                         "is_superuser": False, 
+                         "is_staff": True, 
+                         "last_login": "2014-02-07T13:38:58Z", 
+                         "groups": [[name]], 
+                         "user_permissions": [], 
+                         "password": "pbkdf2_sha256$12000$jn0OqvMfv7Ys$pEaHcw+ruR7OJJL8qDa3iWC+P8Vu74fUTuD04vDHAfI=", 
+                         "email": "", 
+                         "date_joined": "2014-02-07T13:38:58Z"
+                         }})
+    # and some super users
+    for (offset, name) in enumerate(('staffan', 'cecilia', 'magnus', 'maryam', 'janne', 'annika')):
+        data.append({'model': 'auth.user',
+                     'pk': len(myndighet)+offset+1,
+                     "fields": {
+                         "username": name,
+                         "first_name": "", 
+                         "last_name": "", 
+                         "is_active": True, 
+                         "is_superuser": True, 
+                         "is_staff": True, 
+                         "last_login": "2014-02-07T13:38:58Z", 
+                         "groups": [], 
+                         "user_permissions": [], 
+                         "password": "pbkdf2_sha256$12000$jn0OqvMfv7Ys$pEaHcw+ruR7OJJL8qDa3iWC+P8Vu74fUTuD04vDHAfI=", 
+                         "email": "", 
+                         "date_joined": "2014-02-07T13:38:58Z"
+                         }})
+        
     for name, id in verksamhetsomrade.items():
         data.append({'model': 'register.verksamhetsomrade',
                      'pk': id,

@@ -1,17 +1,12 @@
-from django.shortcuts import render
-
-from django.http import HttpResponse
-from django.db.models import Count
-from django.views.generic import TemplateView, ListView, DetailView
 from django.contrib.auth.models import Group as Myndighet
+from django.core import urlresolvers
 from django.core.exceptions import ValidationError
-
+from django.db.models import Count
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.generic import TemplateView, ListView, DetailView
 
 from register.models import Uppgift, Krav, Verksamhetsomrade, Bransch, Foretagsform
-
-def index(request):
-    return render(request, "register/index.html")
-
 
 def _get_plot():
     # returns a subplot connected to a figure connected to a canvas
@@ -63,7 +58,12 @@ class MyListView(ListView):
     paginate_by = 100
 
 class MyDetailView(DetailView):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super(MyDetailView, self).get_context_data(**kwargs)
+        if self.request.user.is_superuser or self.object.myndighet in self.request.user.groups.all():
+            context['adminurl'] = urlresolvers.reverse('admin:register_krav_change', args=(self.object.id,))
+        return context
+
 
 class KravList(MyListView):
     model = Krav
@@ -75,6 +75,7 @@ class KravDetail(MyDetailView):
         context = super(KravDetail, self).get_context_data(**kwargs)
         try:
             self.object.full_clean()
+            context['validation_errors'] = {}
         except ValidationError as e:
             context['validation_errors'] = e.message_dict
         return context

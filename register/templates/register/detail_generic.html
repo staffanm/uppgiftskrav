@@ -4,6 +4,9 @@
 
 {% load register_extras %}
 {% block content %}
+{% if adminurl %}
+<p><a href="{{ adminurl }}" class="btn btn-primary active">Redigera detta krav</a></p>
+{% endif %}
 {% if validation_errors %}
     <div class="alert alert-danger">
       Det finns problem med informationen om uppgiftskravet -- se de rödmarkerade raderna nedan!

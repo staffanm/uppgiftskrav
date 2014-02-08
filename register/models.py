@@ -8,7 +8,6 @@ from django.contrib.auth import models as authmodels
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 
-
 class UppgiftManager(models.Manager):
     def get_by_natural_key(self, uppgiftid):
         return self.get(uppgiftid=uppgiftid)
@@ -122,7 +121,8 @@ class Krav(models.Model):
     
     objects = KravManager()
     OKANT = -1
-
+    NEJ = 0
+    JA = 1
     def not_empty(value):
         if not value:
             raise ValidationError("Värdet får inte vara tomt")
@@ -237,10 +237,11 @@ class Krav(models.Model):
                          göras och om det berör dem. Max 140 tecken
                          inkl mellanslag.""")
 
-    leder_till_insamling = nbf("Leder till insamling från företag",
+    leder_till_insamling = intf("Leder till insamling från företag",
                                help_text="""Anvisning: Ange Ja om det är ett uppgiftskrav.
                                Ange Nej om det inte är ett uppgiftskrav.""",
-                               validators=[not_null])
+                               choices=[(JA, 'Ja'),
+                                        (NEJ, 'Nej')])
 
     egna_noteringar = tf(blank=True,
                          help_text="""Anvisning: Ange egna noteringar i denna cell vid behov.
@@ -248,9 +249,9 @@ class Krav(models.Model):
                          Noteringar från kartläggningens kolumn
                          Upphört? ligger i denna kolumn.""")
 
-    kalenderstyrt = nbf(help_text="""Ange om uppgiften lämnas in utifrån förutbestämd tidpunkt.""",
-                        validators=[not_null],
-    )
+    kalenderstyrt = intf(help_text="""Ange om uppgiften lämnas in utifrån förutbestämd tidpunkt.""",
+                         choices=[(JA, 'Ja'),
+                                  (NEJ, 'Nej')])
 
     INTE_RELEVANT=0
     JANUARI=1
@@ -265,6 +266,10 @@ class Krav(models.Model):
     OKTOBER=10
     NOVEMBER=11
     DECEMBER=12
+    VECKOVIS=13
+    MANADSVIS=14
+    KVARTALSVIS=15
+    ARSVIS=16
     periodicitet = intf(choices=[(INTE_RELEVANT, 'Inte relevant'),
                                  (JANUARI, 'Januari'),
                                  (FEBRUARI, 'Februari'),
@@ -277,7 +282,12 @@ class Krav(models.Model):
                                  (SEPTEMBER, 'September'),
                                  (OKTOBER, 'Oktober'),
                                  (NOVEMBER, 'November'),
-                                 (DECEMBER,'December')],
+                                 (DECEMBER, 'December'),
+                                 (VECKOVIS, 'Veckovis'),
+                                 (MANADSVIS, 'Månadsvis'),
+                                 (KVARTALSVIS, 'Kvartalsvis'),
+                                 (ARSVIS, 'Årsvis (ej särskilt datum)'),
+                             ],
                       help_text="""Ange vid vilken tidpunkt som uppgiften lämnas in om du svarat Ja
                       under Kalenderstyrt. Om du svarat Nej under
                       Kalenderstyrt är "Inte relevant" ifyllt.
@@ -286,9 +296,11 @@ class Krav(models.Model):
 
                       Välj ett av värdena i listan. Vid t ex årlig uppgift, ange när på året.""")
 
-    handelsestyrt = nbf("Händelsestyrt",
+    handelsestyrt = intf("Händelsestyrt",
                         help_text="""Ange om uppgiften lämnas in utifrån händelse.""",
-                        validators=[not_null])
+                        choices=[(JA, 'Ja'),
+                                 (NEJ, 'Nej')])
+
 
     MYNDIGHETSINITIERAT=1
     FORETAGSINITIERAT=2
@@ -325,8 +337,10 @@ class Krav(models.Model):
                   bokstaven X (avser alla) i cellen.""",
                   validators=[not_empty_list])
 
-    arbetsgivare = nbf(help_text="""Ange om uppgiftskravet endast berör arbetsgivare.""",
-                       validators=[not_null])
+    arbetsgivare = intf(help_text="""Ange om uppgiftskravet endast berör arbetsgivare.""",
+                        choices=[(JA, 'Ja'),
+                                 (NEJ, 'Nej')])
+
 
     foretagsform = m2m(Foretagsform,
                        help_text="""Om uppgiftskravet endast berör specifika företagsformer, ange
@@ -341,10 +355,12 @@ class Krav(models.Model):
                        i cellen.""",
                        validators=[not_empty_list])
 
-    storlek = nbf(blank=True,
+    storlek = intf(blank=True,
                   help_text="""Ange om uppgiftskravet endast berör företag eller produktion av
                   viss storlek.""",
-                  validators=[not_null])
+                  choices=[(JA, 'Ja'),
+                           (NEJ, 'Nej')])
+
 
     storlekskriterier = tf(blank=True,
                            help_text="""Ange storlekskriterier om du svarat Ja i kolumnen Storlek (t ex
@@ -377,20 +393,26 @@ class Krav(models.Model):
                              Skriv svaret med siffror i cellen.""",
                          validators=[not_null_integer])
 
-    annan_ingivare = nbf(help_text="""Ange om uppgifter som rör uppgiftskravet kan lämnas av ombud för
+    annan_ingivare = intf(help_text="""Ange om uppgifter som rör uppgiftskravet kan lämnas av ombud för
                          näringsidkaren/företaget (alltså någon som
                          har fullmakt och inte är anställd).""",
-                         validators=[not_null])
+                         choices=[(JA, 'Ja'),
+                                  (NEJ, 'Nej')])
+    
 
-    underskrift = nbf(help_text="""Kräver uppgiftsinlämningen underskrift (på papper eller elektroniskt)?""",
-                      validators=[not_null])
+    underskrift = intf(help_text="""Kräver uppgiftsinlämningen underskrift (på papper eller elektroniskt)?""",
+                      choices=[(JA, 'Ja'),
+                               (NEJ, 'Nej')])
 
-    etjanst = nbf(help_text="""Har ni en e-tjänst som kan användas för insamling av uppgiftskravet
+
+    etjanst = intf(help_text="""Har ni en e-tjänst som kan användas för insamling av uppgiftskravet
                   (dvs tjänst som möjliggör automatiserad behandling
                   av uppgifterna)?  Här avses även
                   maskin-till-maskin-koppling men inte t ex
                   pdf-blankett som måste skrivas ut.""",
-                  validators=[not_null])
+                  choices=[(JA, 'Ja'),
+                           (NEJ, 'Nej')])
+
 
     ENDAST_ETJANST=0
     INGEN_INFO_TILLGANGLIG=1
@@ -491,6 +513,15 @@ class Krav(models.Model):
 
     def get_absolute_url(self):
         return reverse('register:krav-detail', args=[self.kravid])
+
+    def valid(self):
+        try:
+            self.full_clean()
+            return True
+        except ValidationError:
+            return False
+    valid.boolean = True
+    valid.short_description = "Kvalitetssäkrad"
 
     class Meta():
         verbose_name_plural = "Krav"
