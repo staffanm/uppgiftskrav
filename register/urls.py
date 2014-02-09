@@ -21,6 +21,9 @@ urlpatterns = patterns('',
                        url(r'^myndighet/$', views.MyndighetList.as_view(), name="myndighet-list"),
                        url(r'^myndighet/(?P<pk>\d+)$', views.MyndighetDetail.as_view(), name="myndighet-detail"),
 
-                       url(r'^krav/efter_myndighet.png$', views.img_krav_by_myndighet, name="img_krav_by_myndighet"),
-                       url(r'^krav/efter_uppgift.png$', views.img_krav_by_uppgift, name="img_krav_by_uppgift"),
+                       url(r'^search/$', views.search, name="search"),
+
+
+                       url(r'^efter_myndighet.png$', views.img_krav_by_myndighet, name="img_krav_by_myndighet"),
+                       url(r'^efter_uppgift.png$', views.img_krav_by_uppgift, name="img_krav_by_uppgift"),
 )

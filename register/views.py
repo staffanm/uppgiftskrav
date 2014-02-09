@@ -53,6 +53,60 @@ def img_krav_by_uppgift(request):
     ax.set_ylabel("Antal")
     return _serve_plot(canvas)
 
+from django import forms
+
+class SearchForm(forms.Form):
+#        fields = ['kartlaggande_myndighet',
+#                  'kravid',
+#                  'namn',
+#                  'ursprung',
+#                  'leder_till_insamling']
+    ANY = [(-1, '---------'),]
+    
+    kartlaggande_myndighet = forms.ChoiceField(choices=ANY + [(x.id, x.name) for x in Myndighet.objects.all()])
+    kravid = forms.CharField(required=False, max_length=Krav._meta.get_field_by_name('kravid')[0].max_length)
+    namn = forms.CharField(required=False, max_length=Krav._meta.get_field_by_name('namn')[0].max_length)
+    ursprung = forms.ChoiceField(choices= ANY + Krav.URSPRUNG)
+    leder_till_insamling = forms.ChoiceField(choices= ANY + Krav.YESNO, initial=Krav.JA)
+    
+    
+def search(request):
+    if request.method == "POST":
+        # from pudb import set_trace; set_trace()
+        results =  Krav.objects.all()
+        kartlaggande_myndighet = request.POST.get('kartlaggande_myndighet', None)
+        if kartlaggande_myndighet != '-1':
+            results = results.filter(kartlaggande_myndighet__exact=kartlaggande_myndighet)
+            
+        kravid = request.POST.get('kravid', None)
+        if kravid:
+            results = results.filter(kravid__icontains=kravid)
+
+        namn = request.POST.get('namn', None)
+        if namn:
+            results = results.filter(namn__icontains=namn)
+
+        ursprung = request.POST.get('ursprung', None)
+        if ursprung != '-1':
+            results = results.filter(ursprung__exact=ursprung)
+        
+        leder_till_insamling = request.POST.get('leder_till_insamling', None)
+        if leder_till_insamling != '-1':
+            results = results.filter(leder_till_insamling__exact=leder_till_insamling)
+
+        incompletecount = sum(not x.valid() for x in results)
+        if results.count():
+            incompletepercentage = int(incompletecount/float(results.count())*100)
+        else:
+            incompletepercentage = 0
+        context = {'resultcount': results.count(),
+                   'incompletecount': incompletecount,
+                   'incompletepercentage': incompletepercentage,
+                   'form': SearchForm(request.POST),
+                   'resultset':  results }
+    else:
+        context = {'form': SearchForm() }
+    return render(request, 'register/search.html', context)
 
 class MyListView(ListView):
     paginate_by = 100

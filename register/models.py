@@ -212,8 +212,9 @@ class Krav(models.Model):
 
     NATIONELLT=1
     EU=2
-    ursprung = intf(choices=[(NATIONELLT, "Nationellt"),
-                             (EU, "EU mm")],
+    URSPRUNG = [(NATIONELLT, "Nationellt"),
+                (EU, "EU mm")]
+    ursprung = intf(choices=URSPRUNG,
                   help_text="""Vilket ursprung författningen har. Antingen "EU mm" eller "Nationellt".""")
 
     beskrivning = tf(editable=False,
@@ -237,11 +238,12 @@ class Krav(models.Model):
                          göras och om det berör dem. Max 140 tecken
                          inkl mellanslag.""")
 
+    YESNO = [(JA, 'Ja'),
+             (NEJ, 'Nej')]
     leder_till_insamling = intf("Leder till insamling från företag",
                                help_text="""Anvisning: Ange Ja om det är ett uppgiftskrav.
                                Ange Nej om det inte är ett uppgiftskrav.""",
-                               choices=[(JA, 'Ja'),
-                                        (NEJ, 'Nej')])
+                                choices=YESNO)
 
     egna_noteringar = tf(blank=True,
                          help_text="""Anvisning: Ange egna noteringar i denna cell vid behov.
@@ -250,8 +252,7 @@ class Krav(models.Model):
                          Upphört? ligger i denna kolumn.""")
 
     kalenderstyrt = intf(help_text="""Ange om uppgiften lämnas in utifrån förutbestämd tidpunkt.""",
-                         choices=[(JA, 'Ja'),
-                                  (NEJ, 'Nej')])
+                         choices=YESNO)
 
     INTE_RELEVANT=0
     JANUARI=1
@@ -298,8 +299,7 @@ class Krav(models.Model):
 
     handelsestyrt = intf("Händelsestyrt",
                         help_text="""Ange om uppgiften lämnas in utifrån händelse.""",
-                        choices=[(JA, 'Ja'),
-                                 (NEJ, 'Nej')])
+                        choices=YESNO)
 
 
     MYNDIGHETSINITIERAT=1
@@ -338,8 +338,7 @@ class Krav(models.Model):
                   validators=[not_empty_list])
 
     arbetsgivare = intf(help_text="""Ange om uppgiftskravet endast berör arbetsgivare.""",
-                        choices=[(JA, 'Ja'),
-                                 (NEJ, 'Nej')])
+                        choices=YESNO)
 
 
     foretagsform = m2m(Foretagsform,
@@ -358,8 +357,7 @@ class Krav(models.Model):
     storlek = intf(blank=True,
                   help_text="""Ange om uppgiftskravet endast berör företag eller produktion av
                   viss storlek.""",
-                  choices=[(JA, 'Ja'),
-                           (NEJ, 'Nej')])
+                   choices=YESNO)
 
 
     storlekskriterier = tf(blank=True,
@@ -396,13 +394,11 @@ class Krav(models.Model):
     annan_ingivare = intf(help_text="""Ange om uppgifter som rör uppgiftskravet kan lämnas av ombud för
                          näringsidkaren/företaget (alltså någon som
                          har fullmakt och inte är anställd).""",
-                         choices=[(JA, 'Ja'),
-                                  (NEJ, 'Nej')])
+                          choices=YESNO)
     
 
     underskrift = intf(help_text="""Kräver uppgiftsinlämningen underskrift (på papper eller elektroniskt)?""",
-                      choices=[(JA, 'Ja'),
-                               (NEJ, 'Nej')])
+                       choices=YESNO)
 
 
     etjanst = intf(help_text="""Har ni en e-tjänst som kan användas för insamling av uppgiftskravet
@@ -410,8 +406,7 @@ class Krav(models.Model):
                   av uppgifterna)?  Här avses även
                   maskin-till-maskin-koppling men inte t ex
                   pdf-blankett som måste skrivas ut.""",
-                  choices=[(JA, 'Ja'),
-                           (NEJ, 'Nej')])
+                   choices=YESNO)
 
 
     ENDAST_ETJANST=0
