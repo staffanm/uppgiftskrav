@@ -114,7 +114,7 @@ class MyListView(ListView):
 class MyDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MyDetailView, self).get_context_data(**kwargs)
-        if self.request.user.is_superuser or self.object.myndighet in self.request.user.groups.all():
+        if self.request.user.is_superuser or self.object.kartlaggande_myndighet in self.request.user.groups.all():
             context['adminurl'] = urlresolvers.reverse('admin:register_krav_change', args=(self.object.id,))
         return context
 
