@@ -521,7 +521,7 @@ class Krav(models.Model):
         except ValidationError:
             return False
     valid.boolean = True
-    valid.short_description = "Kvalitetssäkrad"
+    valid.short_description = "Fullständigt"
 
     class Meta():
         verbose_name_plural = "Krav"

@@ -5,7 +5,8 @@ register = template.Library()
 
 @register.filter
 def getitem(dictionary, key):
-    return dictionary.get(key)
+    if dictionary:
+        return dictionary.get(key)
 
 @register.filter
 def swedify(val, field):
