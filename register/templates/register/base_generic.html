@@ -30,6 +30,8 @@
             <li><a href="{% url 'register:form-list' %}">Företagsformer</a></li>
 	    {% if not user.is_authenticated %}
             <li><a href="/admin/ %}">Logga in</a></li>
+	    {% else %}
+	    <li>Inloggad som <b>{{ user }}</b></li>
 	    {% endif %}
           </ul>
         </div><!--/.nav-collapse -->

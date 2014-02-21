@@ -112,12 +112,7 @@ class MyListView(ListView):
     paginate_by = 100
 
 class MyDetailView(DetailView):
-    def get_context_data(self, **kwargs):
-        context = super(MyDetailView, self).get_context_data(**kwargs)
-        if self.request.user.is_superuser or self.object.kartlaggande_myndighet in self.request.user.groups.all():
-            context['adminurl'] = urlresolvers.reverse('admin:register_krav_change', args=(self.object.id,))
-        return context
-
+    pass
 
 class KravList(MyListView):
     model = Krav
@@ -132,6 +127,10 @@ class KravDetail(MyDetailView):
             context['validation_errors'] = {}
         except ValidationError as e:
             context['validation_errors'] = e.message_dict
+
+        if self.request.user.is_superuser or self.object.kartlaggande_myndighet in self.request.user.groups.all():
+            context['adminurl'] = urlresolvers.reverse('admin:register_krav_change', args=(self.object.id,))
+
         return context
 
 class UppgiftList(MyListView):
