@@ -381,7 +381,7 @@ def make_fixture(newdata, olddata, fixture):
                          "date_joined": "2014-02-07T13:38:58Z"
                          }})
     # and some super users
-    for (offset, name) in enumerate(('staffan', 'cecilia', 'magnus', 'maryam', 'janne', 'annika')):
+    for (offset, name) in enumerate(('staffan', 'cecilia', 'magnus', 'maryam', 'janne', 'annika', 'bengt')):
         data.append({'model': 'auth.user',
                      'pk': len(myndighet)+offset+1,
                      "fields": {

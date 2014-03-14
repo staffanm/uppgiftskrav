@@ -1751,6 +1751,24 @@
         }
     }, 
     {
+        "pk": 30, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "bengt", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_staff": true, 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "pbkdf2_sha256$12000$jn0OqvMfv7Ys$pEaHcw+ruR7OJJL8qDa3iWC+P8Vu74fUTuD04vDHAfI=", 
+            "date_joined": "2014-02-07T13:38:58Z", 
+            "first_name": "", 
+            "is_superuser": true, 
+            "last_login": "2014-02-07T13:38:58Z", 
+            "email": ""
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "register.verksamhetsomrade", 
         "fields": {
