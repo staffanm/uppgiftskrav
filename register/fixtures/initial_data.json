@@ -23349,7 +23349,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 6650, 
+            "volymer_etjanst": 79800, 
             "foretagsform": [
                 [
                     "X"
@@ -23456,7 +23456,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 7140, 
+            "volymer_etjanst": 85680, 
             "foretagsform": [
                 [
                     "X"
@@ -23545,7 +23545,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 8875, 
+            "volymer_etjanst": 78000, 
             "foretagsform": [
                 [
                     "X"
@@ -23607,7 +23607,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 1420, 
+            "volymer_etjanst": 5680, 
             "foretagsform": [
                 [
                     "X"
@@ -23761,7 +23761,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 1720, 
+            "volymer_etjanst": 20640, 
             "foretagsform": [
                 [
                     "X"
@@ -24016,7 +24016,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 1560, 
+            "volymer_etjanst": 18720, 
             "foretagsform": [
                 [
                     "X"
@@ -24075,7 +24075,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 913, 
+            "volymer_etjanst": 3652, 
             "foretagsform": [
                 [
                     "X"
@@ -24128,13 +24128,13 @@
             "kravid": "SCB12", 
             "initierande_part": 1, 
             "svarighet_ej_etjanst": 4, 
-            "kortbeskrivning": "Industrif\u00f6retag ska l\u00e4mna uppgifter om lager av handelsvaror, insatsprodukter, produkter i arbete samt  f\u00e4rdiga varor av egen tillverkning.", 
+            "kortbeskrivning": "Industrif\u00f6rtetag ska l\u00e4mna uppgifter om lager av handelsvaror, insatsprodukter, produkter i arbete samt  f\u00e4rdiga varor av egen tillverkning.", 
             "anteckning": "", 
             "kartlaggande_myndighet": [
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 913, 
+            "volymer_etjanst": 3652, 
             "foretagsform": [
                 [
                     "X"
@@ -24264,7 +24264,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 1027, 
+            "volymer_etjanst": 4108, 
             "foretagsform": [
                 [
                     "X"
@@ -24478,7 +24478,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 6468, 
+            "volymer_etjanst": 77616, 
             "foretagsform": [
                 [
                     "X"
@@ -24838,7 +24838,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 245, 
+            "volymer_etjanst": 2940, 
             "foretagsform": [
                 [
                     "X"
@@ -25006,7 +25006,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 475, 
+            "volymer_etjanst": 1900, 
             "foretagsform": [
                 [
                     "X"
@@ -25225,7 +25225,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 2100, 
+            "volymer_etjanst": 25200, 
             "foretagsform": [
                 [
                     "X"
@@ -25308,7 +25308,7 @@
             "kravid": "SCB29", 
             "initierande_part": 2, 
             "svarighet_ej_etjanst": 4, 
-            "kortbeskrivning": "F\u00f6retag inom detaljhandeln ska uppge oms\u00e4ttning f\u00f6rdelat p\u00e5 livsmedels- och dryckesvarugrupper.", 
+            "kortbeskrivning": "F\u00f6retag inom detaljhandeln ska uppge oms\u00e4ttning f\u00f6rdelat p\u00e5 livsmedels- och dryckesvargrupper.", 
             "anteckning": "", 
             "kartlaggande_myndighet": [
                 "SCB"
@@ -25647,7 +25647,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 1710, 
+            "volymer_etjanst": 20520, 
             "foretagsform": [
                 [
                     "X"
@@ -25721,7 +25721,7 @@
             "kravid": "SCB34", 
             "initierande_part": 1, 
             "svarighet_ej_etjanst": 4, 
-            "kortbeskrivning": "F\u00f6retag ska l\u00e4mna uppgift om produkt- och processinnovationer, organisatoriska innovationer samt innovationer inom marknadsf\u00f6ring.", 
+            "kortbeskrivning": "F\u00f6retag ska l\u00e4mna uppgift om produkt- och processinovattioner, organisatoriska innovationer samt innovationer inom marknadsf\u00f6ring.", 
             "anteckning": "", 
             "kartlaggande_myndighet": [
                 "SCB"
@@ -25825,7 +25825,7 @@
             "kravid": "SCB35", 
             "initierande_part": 1, 
             "svarighet_ej_etjanst": 4, 
-            "kortbeskrivning": "F\u00f6retag ska l\u00e4mna uppgift om oregelbundna ers\u00e4ttningar, n\u00e4r i tiden utbetalningen skett samt g\u00f6ra en f\u00f6rdelning per personnummer.", 
+            "kortbeskrivning": "F\u00f6retag ska l\u00e4mna uppgift om oregelbundna ers\u00e4ttningar, n\u00e4r i tiden utbeltalningen skett samt g\u00f6ra en f\u00f6rdelning per personnummer.", 
             "anteckning": "", 
             "kartlaggande_myndighet": [
                 "SCB"
@@ -26095,7 +26095,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 4388, 
+            "volymer_etjanst": 52656, 
             "foretagsform": [
                 [
                     "X"
@@ -26326,7 +26326,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 801, 
+            "volymer_etjanst": 3204, 
             "foretagsform": [
                 [
                     "X"
@@ -26385,7 +26385,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 86, 
+            "volymer_etjanst": 1032, 
             "foretagsform": [
                 [
                     "X"
@@ -26447,7 +26447,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 277, 
+            "volymer_etjanst": 3324, 
             "foretagsform": [
                 [
                     "AB"
@@ -26627,7 +26627,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 71, 
+            "volymer_etjanst": 852, 
             "foretagsform": [
                 [
                     "X"
@@ -27067,7 +27067,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 14, 
+            "volymer_etjanst": 56, 
             "foretagsform": [
                 [
                     "AB"
@@ -27123,7 +27123,7 @@
                 "SCB"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 22, 
+            "volymer_etjanst": 88, 
             "foretagsform": [
                 [
                     "AB"
@@ -27288,7 +27288,7 @@
             "kravid": "SCB57", 
             "initierande_part": 1, 
             "svarighet_ej_etjanst": 3, 
-            "kortbeskrivning": "F\u00f6rpackningsmaterialbolag ska l\u00e4mna uppgift om tillverkning, in- och utf\u00f6rsel, \u00e5tervinning och \u00e5teranv\u00e4ndning av f\u00f6rpackningar.", 
+            "kortbeskrivning": "F\u00f6rpackningsmaterialbolag ska l\u00e4mna uppgift om tillverkning, in- och utf\u00f6rsel, \u00e5tervinnig och \u00e5teranv\u00e4ndning av f\u00f6rpackningar.", 
             "anteckning": "", 
             "kartlaggande_myndighet": [
                 "SCB"
@@ -27406,7 +27406,7 @@
             "kravid": "SCB59", 
             "initierande_part": 1, 
             "svarighet_ej_etjanst": 1, 
-            "kortbeskrivning": "R\u00f6r upphandlingar inom en rad olika omr\u00e5den och omfattar n\u00e4ringsidkare inom de flesta branscher.", 
+            "kortbeskrivning": "R\u00f6r upphandlingar inom en rad olika omr\u00e5den och omfattar n\u00e4ringsidakre inom de flesta branscher.", 
             "anteckning": "", 
             "kartlaggande_myndighet": [
                 "SCB"
@@ -27751,7 +27751,7 @@
             "storlekskriterier": "Inte relevant", 
             "antal_foretag": 189, 
             "leder_till_insamling": 1, 
-            "ursprung": 2, 
+            "ursprung": 1, 
             "paragraf": "27 \u00a7", 
             "ovrigt_hur": "Kr\u00e4ver ej underskrift om inl\u00e4mning i elektronisk form. Antal f\u00f6retag och volymer delvis utifr\u00e5n bed\u00f6mningar.", 
             "ovriga_urvalskriterier": "", 
@@ -29265,7 +29265,7 @@
             "storlekskriterier": "Inte relevant", 
             "antal_foretag": 1603, 
             "leder_till_insamling": 1, 
-            "ursprung": 2, 
+            "ursprung": 1, 
             "paragraf": "12 kap 6 \u00a7 MB (1998:808)", 
             "ovrigt_hur": "Kr\u00e4ver ej underskrift om blankett inl\u00e4mnas som e-post. Antalet avser samr\u00e5ds\u00e4renden som inte inkommit via avverkningsanm\u00e4lan (ID SKS1)", 
             "ovriga_urvalskriterier": "", 
@@ -40377,7 +40377,7 @@
             "lagrum": "SFS2011:1244 30 1", 
             "periodicitet": 6, 
             "storlekskriterier": "Inte relevant", 
-            "antal_foretag": 1352297, 
+            "antal_foretag": 1086757, 
             "leder_till_insamling": 1, 
             "ursprung": 1, 
             "paragraf": "2 kap 1-2 \u00a7\u00a7", 
@@ -40394,7 +40394,7 @@
             "verksamhetsomrade": [
                 "Skatteverket - 1"
             ], 
-            "volymer_2012": 1352297, 
+            "volymer_2012": 1086757, 
             "egna_noteringar": "Flyttad till 2011:1244 30 kap 1\u00a7", 
             "forfattning": "SFS 2001:1227", 
             "uppgifter": [
@@ -66104,11 +66104,11 @@
             "lagrum": "SFS2001:650 10 3", 
             "periodicitet": 0, 
             "storlekskriterier": "", 
-            "antal_foretag": 1500000, 
+            "antal_foretag": 300000, 
             "leder_till_insamling": 1, 
             "ursprung": 1, 
             "paragraf": "", 
-            "ovrigt_hur": "E-tj\u00e4nst avser mobil app", 
+            "ovrigt_hur": "", 
             "ovriga_urvalskriterier": "", 
             "beskrivning": "En anm\u00e4lan om \u00e4garbyte ska g\u00f6ras n\u00e4r ett fordon byter \u00e4gare. Om man k\u00f6per eller s\u00e4ljer sitt fordon till en fordonshandlare, kan han eller hon ofta g\u00f6ra \u00e4garbytet via datoruppkoppling mot Transportstyrelsen. N\u00e5gon anm\u00e4lan via registreringsbeviset eller appen Mina fordon \u00e4r d\u00e5 inte n\u00f6dv\u00e4ndig.", 
             "volymer_tidigare": null, 
@@ -66121,7 +66121,7 @@
             "verksamhetsomrade": [
                 "Transportstyrelsen-V\u00e4g-SA&TRA"
             ], 
-            "volymer_2012": 3000000, 
+            "volymer_2012": 2400000, 
             "egna_noteringar": "TRA", 
             "forfattning": "", 
             "uppgifter": [], 
@@ -66140,7 +66140,7 @@
                 "Transportstyrelsen"
             ], 
             "annan_ingivare": 1, 
-            "volymer_etjanst": 40000, 
+            "volymer_etjanst": 1910807, 
             "foretagsform": [
                 [
                     "X"
