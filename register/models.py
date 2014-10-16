@@ -324,10 +324,10 @@ class Krav(models.Model):
     MYNDIGHETSINITIERAT=1
     FORETAGSINITIERAT=2
     BADA=3
-    initierande_part = intf(choices=((MYNDIGHETSINITIERAT, "Myndighetsinitierat"),
-                                     (FORETAGSINITIERAT, "Företagsinitierat"),
-                                     (BADA, "Båda")),
-
+    INITIERANDE = [(MYNDIGHETSINITIERAT, "Myndighetsinitierat"),
+                        (FORETAGSINITIERAT, "Företagsinitierat"),
+                        (BADA, "Båda")]
+    initierande_part = intf(choices=INITIERANDE,
                             help_text="""Ange om myndigheten, företaget eller båda initierar
                           uppgiftskravet första gången.
 
@@ -542,10 +542,16 @@ class Krav(models.Model):
         return "%s: %s" % (self.kravid, self.namn)
 
     def __iter__(self):
+        # FIXME: This method is a clear sign that i do not know what
+        # i'm doing.
         for i in self._meta.get_all_field_names():
-            #if i == "initierande_part":
-            #    from pudb import set_trace; set_trace()
-            yield (self._meta.get_field(i), getattr(self, i))
+            try:
+                yield (self._meta.get_field(i), getattr(self, i))
+            # meta.get_all_field_names returns "ansvarig_myndighet_id"
+            # and others
+            except FieldDoesNotExist:
+                pass
+
 
     def natural_key(self):
         return (self.kravid,)

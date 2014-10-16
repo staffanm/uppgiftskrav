@@ -66,6 +66,8 @@ class SearchForm(forms.Form):
     kartlaggande_myndighet = forms.ChoiceField(choices=ANY + [(x.id, x.name) for x in Myndighet.objects.all()])
     kravid = forms.CharField(required=False, max_length=Krav._meta.get_field_by_name('kravid')[0].max_length)
     namn = forms.CharField(required=False, max_length=Krav._meta.get_field_by_name('namn')[0].max_length)
+    initierande_part = forms.ChoiceField(choices=ANY + Krav.INITIERANDE)
+    etjanst = forms.ChoiceField(choices=ANY+Krav.YESNO)
     ursprung = forms.ChoiceField(choices= ANY + Krav.URSPRUNG)
     leder_till_insamling = forms.ChoiceField(choices= ANY + Krav.YESNO, initial=Krav.JA)
     
@@ -85,6 +87,14 @@ def search(request):
         namn = request.POST.get('namn', None)
         if namn:
             results = results.filter(namn__icontains=namn)
+
+        initierande_part = request.POST.get('initierande_part', None)
+        if initierande_part != '-1':
+            results = results.filter(initierande_part__exact=initierande_part)
+
+        etjanst = request.POST.get('etjanst', None)
+        if etjanst != '-1':
+            results = results.filter(etjanst__exact=etjanst)
 
         ursprung = request.POST.get('ursprung', None)
         if ursprung != '-1':

@@ -33,7 +33,10 @@ def value(row, idx, max_length=None):
 
 def lagrum(row, idx):
     val = value(row, idx)
-    
+    d = parse_lagrum(val)
+    res = format_lagrum(d)
+    print("%s => %s => %s" % (val, d, res))
+    return res
 
 def parse_lagrum(s):
     """
