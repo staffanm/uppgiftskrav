@@ -1,1 +1,1 @@
-web: gunicorn uppgiftskrav.wsgi:application
+web: gunicorn uppgiftskrav.wsgi --log-file -
