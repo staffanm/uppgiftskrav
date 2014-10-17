@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import print_function 
-from collections import OrderedDict
+from __future__ import print_function, unicode_literals
+from collections import OrderedDict, defaultdict
 import json
 import re
 import sys
@@ -31,11 +31,16 @@ def value(row, idx, max_length=None):
     return val.strip()
 
 
+fsrefs = defaultdict(int)
+
 def lagrum(row, idx):
     val = value(row, idx)
-    d = parse_lagrum(val)
-    res = format_lagrum(d)
-    print("%s => %s => %s" % (val, d, res))
+    ds = parse_lagrum(val)
+    for d in ds:
+        if 'fs' in d:
+            fsrefs[(d['fs'], d['fsnr'])] += 1
+    res = format_lagrum(ds)
+    # print("%s => %s => %s" % (val, ds, res))
     return res
 
 def parse_lagrum(s):
@@ -127,14 +132,14 @@ def parse_lagrum(s):
                     res[-1][fld] = "%s %s" % groups
     return res
     
-                       
 
 def format_lagrum(*lagrum):
     """
     >>> format_lagrum({'fs': 'SFS', 'fsnr': '2008:145', 'kap': '3', 'par': '3'})
-    3 kap. 3 § lagen (2008:145) om statligt tandvårdsstöd
+    "3 kap. 3 § lagen (2008:145) om statligt tandvårdsstöd"
     """
-    print("3 kap. 3 § lagen (2008:145) om statligt tandvårdsstöd")
+    return ("3 kap. 3 § lagen (2008:145) om statligt tandvårdsstöd")
+
 
 def note(row, idx, dictionary):
     val = value(row, idx)
@@ -142,19 +147,22 @@ def note(row, idx, dictionary):
         dictionary[val] = len(dictionary)+1
     return val
 
+
 def choice(row, idx, choices, default=None):
     val = value(row, idx)
     lval = val.lower()
-    lchoices = [x.lower() if hasattr(x,'lower') else x for x in choices ]
+    lchoices = [x.lower() if hasattr(x, 'lower') else x for x in choices]
     if lval in lchoices:
         return lchoices.index(lval)
     else:
         if val:
-            print("WARNING (%s): %r not in %r" %(row[3].internal_value, val, choices))
-        if default is not None: # must be able to be 0 or other falsieness
+            print("WARNING (%s): %r not in %r" %
+                  (row[3].internal_value, val, choices))
+        if default is not None:  # must be able to be 0 or other falsieness
             return default
         else:
             raise KeyError(val)
+
 
 def integer(row, idx):
     val = value(row, idx)
@@ -240,7 +248,7 @@ def make_fixture(newdata, olddata, fixture):
                                         'namn': value(row, NAMN),
                                         'forfattning': value(row, FORFATTNING, max_length=50),
                                         'paragraf': value(row, PARAGRAF, max_length=50),
-                                        'lagrum': value(row, LAGRUM, max_length=255),
+                                        'lagrum': lagrum(row, LAGRUM),
                                         'ursprung': choice(row, URSPRUNG, (False, "Nationellt", "EU mm"), default=-1),
                                         'beskrivning': value(row, BESKRIVNING),
                                         'anteckning': value(row, ANTECKNING),
@@ -534,6 +542,26 @@ def make_fixture(newdata, olddata, fixture):
         json.dump(data, fp, indent=4)
     print("Wrote %s entries to %s" % (len(data), fixture))
 
+    # 6: temp stats
+    # pprint(sorted([(v, k) for k, v in fsrefs.items()]))
+
+    res = "{"
+    with open("sfstitles.nt") as fp:
+        for line in fp:
+            fsnr, title = re.match('<http://rinfo.lagrummet.se/publ/sfs/(\d+:[^>]+)> <http://purl.org/dc/terms/title> "([^"]*)"', line).groups()
+        res += '"%s": "%s"' % (fsnr, title)
+    res += "}"
+    sfstitles = json.loads(res)
+    
+    for k, v in fsrefs.items:
+        fs, fsnr = k
+        if fs == "SFS":
+            name = sfstitles[fsnr]
+        else:
+            name = "Myndighetens föreskrifter (%s) om X" % fsnr
+    print("(%r, %r): '%s'" % (k, v, name))
+
+    
 if __name__ == "__main__":
 
     if len(sys.argv) != 4:

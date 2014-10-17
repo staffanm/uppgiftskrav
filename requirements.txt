@@ -13,3 +13,4 @@ pystache
 static
 urwid
 wsgiref
+openpyxl==1.7.0

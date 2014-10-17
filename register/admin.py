@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
+from django.db import models
+from django.forms import CheckboxSelectMultiple, Textarea
+
 from register.models import Uppgift, Verksamhetsomrade, Bransch, Foretagsform, Krav
 # Register your models here.
 class UppgiftAdmin(admin.ModelAdmin):
@@ -27,13 +30,14 @@ admin.site.register(Foretagsform, ForetagsformAdmin)
 class KravAdmin(admin.ModelAdmin):
     list_display = ['kravid', 'namn', 'valid']
     list_filter = ['kartlaggande_myndighet', 'initierande_part', 'etjanst', 'leder_till_insamling']
+    formfield_overrides = { models.ManyToManyField: {'widget': CheckboxSelectMultiple()},
+                            models.TextField: {'widget': Textarea(attrs={'cols':80, 'rows':3})}}
 
     fieldsets = [
-        ('Insamling', {'fields': ['verksamhetsomrade',
+        ('Uppgiftskrav', {'fields':[ 'namn',
+                                     'verksamhetsomrade',
                                   'ansvarig_myndighet',
-                                  # 'kartlaggande_myndighet',   utgår eftersom UKR i förlängningen ska användas a v alla
-                                  'kravid',
-                                  'namn',
+                                  'kartlaggande_myndighet',   # utgår på sikt eftersom UKR i förlängningen ska användas a v alla
                                   # 'forfattning', # förifyllt från Malin, anges
                                   # 'paragraf',    # istället i lagrum/Författningsstöd
                                   'lagrum',
@@ -45,36 +49,38 @@ class KravAdmin(admin.ModelAdmin):
                                   'leder_till_insamling',
                                   'galler_from',
                                   'galler_tom',
-                                  'egna_noteringar'
                               ]}),
-        ('När', {'fields': ['kalenderstyrt', # FIXME: om 'nej' ska periodicitet döljas (dynamiskt mha JS?)
+        ('När aktualiseras uppgiftkravet?', {'fields': ['kalenderstyrt', # FIXME: om 'nej' ska periodicitet döljas (dynamiskt mha JS?)
                             'periodicitet',
                             'handelsestyrt',
                             'initierande_part',
                             # 'ovrigt_nar'   inaktivera och systematisera bättre i framtiden
                             ]}),
-        ('Vem', {'fields': ['bransch',
+        ('Vilka företag omfattas av uppgiftskravet?', {'fields': ['bransch',
                             'arbetsgivare',
-                            'antal_anstallda',
-                            'anstallda',
+                            # 'antal_anstallda',
+                            # 'anstallda',  # oklart nyttan?
                             'foretagsform',
                             # 'storlek',
                             # 'storlekskriterier'
                             # 'ovriga_urvalskriterier' # inaktivera i nuvarande kartläggning och systematisera bättre i framtiden
                             # 'antal_foretag' # intressant men har inte sin plats i ett UKR
                             ]}),
-        ('Hur', {'fields': ['annan_ingivare',
+        ('Hur fullgörs uppgiftskravet?', {'fields': ['annan_ingivare',
                             # 'underskrift' # inaktivera i nuvarande kartläggning och systematisera bättre i framtiden
-                            'etjanst',
-                            'maskintillmaskin',
-                            'svarighet_ej_etjanst',
+                            'blankett',                                                     
                             'lank_till_blankett',
-                            'svarighet_etjanst',
+                            'etjanst',
                             'lank_till_etjanst',
+                            'maskintillmaskin',
+                            # 'svarighet_ej_etjanst',
+                            # 'svarighet_etjanst',
                             # 'volymer_tidigare',
                             # 'volymer_2012',
                             # 'volymer_etjanst'  # borttagna utan kommentar
-                            'ovrigt_hur']})
+                            'ovrigt_hur']}),
+        ('Övrigt', {'fields': ['egna_noteringar',
+                               'aktivt']})
     ]
     
     # only show those kravs that the user may edit (based upon the

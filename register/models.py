@@ -173,11 +173,9 @@ class Krav(models.Model):
 
     # krav = cf("Krav?", blank=True, max_length=10, help_text="What?")
     
-    namn = cf("Uppgiftskrav",
+    namn = cf("Uppgiftskravsnamn",
               max_length=255,
-              help_text="""Förklaring: Krav på näringsidkare/företag till följd av lag,
-              förordning eller föreskrift att lämna uppgifter till
-              myndighet.""")
+              help_text="""Benämning på uppgiftskravet gentemot företaget""")
 
     forfattning = cf("Författning",
                      max_length=50,
@@ -347,13 +345,8 @@ class Krav(models.Model):
     bransch = m2m(Bransch,
                   help_text="""Om uppgiftskravet endast berör specifik bransch, ange den/dessa på
                   den översta nivån av SNI2007.
-    
-                  Skriv en eller flera av bokstäverna A-T i
-                  cellen. Bokstäverna åtskiljs med komma utan
-                  mellanslag.
 
-                  Om uppgiftskravet inte berör specifik bransch, skriv
-                  bokstaven X (avser alla) i cellen.""",
+                  Om uppgiftskravet inte berör specifik bransch, ange X (avser alla).""",
                   validators=[not_empty_list])
 
     arbetsgivare = intf(help_text="""Ange om uppgiftskravet endast berör arbetsgivare.""",
@@ -371,14 +364,9 @@ class Krav(models.Model):
     foretagsform = m2m(Foretagsform,
                        help_text="""Om uppgiftskravet endast berör specifika företagsformer, ange
                        dessa.
-    
-                       Skriv någon eller några av följande
-                       förkortningar E,AB,HB,KB,BRF,EK,A i cellen.
-                       Bokstäverna åtskiljs med komma utan mellanslag.
-                       
+
                        Om uppgiftskravet inte berör specifika
-                       företagsformer, skriv bokstaven X (avser alla)
-                       i cellen.""",
+                       företagsformer, ange X (avser alla).""",
                        validators=[not_empty_list])
 
     storlek = intf(blank=True,
@@ -424,23 +412,26 @@ class Krav(models.Model):
                           choices=YESNO)
     
 
-    underskrift = intf(help_text="""Kräver uppgiftsinlämningen underskrift (på papper eller elektroniskt)?""",
+    underskrift = intf(help_text="Kräver uppgiftsinlämningen underskrift (på papper eller elektroniskt)?",
                        choices=YESNO)
-
 
     etjanst = intf("E-tjänst",
                    help_text="""Har ni en e-tjänst som kan användas för insamling av uppgiftskravet
                   (dvs tjänst som möjliggör automatiserad behandling
-                  av uppgifterna)?  Här avses även
-                  maskin-till-maskin-koppling men inte t ex
+                  av uppgifterna)?  Här inte t ex
                   pdf-blankett som måste skrivas ut.""",
                    choices=YESNO)
+
+    blankett = intf("Elektronisk blankett",
+                    null=True,
+                    help_text="Har ni en elektronisk blankett (t ex PDF-blankett) som kan fyllas i och lämnas in med brev, fax, e-post?",
+                    choices=YESNO)
 
     maskintillmaskin = intf("Maskin-till-maskingränssnitt",
                             null=True,
                             help_text="Har ni ett maskin-till-maskingränssnitt"
                             " som kan användas för insamling av uppgifter i "
-                            "uppgiftskravet",
+                            "uppgiftskravet?",
                             choices=YESNO)
 
     ENDAST_ETJANST = 0
@@ -476,11 +467,11 @@ class Krav(models.Model):
                              Företaget kan ladda ner interaktiv
                              (offline) blankett och lämna in med
                              brevpost, fax, e-post.""")
-    lank_till_blankett = url("Länk till info eller blankett",
+    lank_till_blankett = url("Länk till blankett",
                              max_length=1000,
                              blank=True,
                              null=True,
-                             help_text="""Ange länk direkt till blankett""")
+                             help_text="""Ange länk direkt till blankett i det fall det finns, annars lämna tomt.""")
 
     ETJANST = 5
     MASKIN_TILL_MASKIN = 6
@@ -505,7 +496,7 @@ class Krav(models.Model):
     lank_till_etjanst = url("Länk till e-tjänst",
                             blank=True,
                             null=True,
-                            help_text="Ange länk till e-tjänst")
+                            help_text="Ange länk till e-tjänsti det fall det finns, annars lämna tomt.")
 
     volymer_tidigare = intf("Volymer tidigare genomförd kartläggning",
                             blank=True,
@@ -535,7 +526,10 @@ class Krav(models.Model):
                     blank=True,
                     help_text="""Finns det övrig relevant information om hur uppgiften samlas in?""")
 
-    url = models.URLField(blank=True) # link to etjänst
+    aktivt = intf("Publicerat",
+                  choices=YESNO,
+                  default=NEJ,
+                  help_text="""Är uppgiftskravet aktuellt, gällande och fullständigt (inte under redigering)?""")
     uppgifter = models.ManyToManyField(Uppgift, blank=True, validators=[not_empty_list])
 
     def __unicode__(self):
