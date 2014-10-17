@@ -7,7 +7,6 @@ django-bootstrap3
 gunicorn
 matplotlib
 numpy
-openpyxl
 psycopg2
 pystache
 static
