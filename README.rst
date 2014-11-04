@@ -25,9 +25,12 @@ Något i stil med detta::
     python ./manage.py migrate
     python ./manage.py loaddata register/fixtures/initial_data.json
 
+Systemet kan sedan köras som en vanlig djangoapp (./manage.py runserver eller via WSGI), eller via foreman (som fås som del av Heroku toolbelt)::
 
- Deploy till Heroku
- ------------------
+    foreman start
+
+Deploy till Heroku
+------------------
 
  Liknande kommandon::
 

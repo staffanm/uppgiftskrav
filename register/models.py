@@ -160,8 +160,15 @@ class Krav(models.Model):
                            blank=True,
                            null=True,
                            verbose_name="Verksamhetsområde",
-                           help_text="""Indelning som vissa myndigheter själva önskat för att
-                           kunna dela upp arbetet.""")
+                           help_text="Indelning som vissa myndigheter själva "
+                                     "önskat för att kunna dela upp arbetet.")
+
+    kravomrade = fk(Kravomrade,
+                    blank=True,
+                    null=True,
+                    verbose_name="Kravområde",
+                    help_text="Indelning i krav efter områden som är naturliga "
+                              "utifrån en företagares perspektiv")
 
     ansvarig_myndighet = fk(authmodels.Group,
                             related_name="ansvarig_for",

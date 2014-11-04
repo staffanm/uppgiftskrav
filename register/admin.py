@@ -35,7 +35,8 @@ admin.site.register(Foretagsform, ForetagsformAdmin)
 
 
 class KravAdmin(admin.ModelAdmin):
-    list_display = ['kravid', 'namn', 'avgransad', 'valid']
+    list_display = ['kravid', 'namn', 'initierande_part', 'avgransad', 'valid', ]
+    # list_editable = ['namn', 'initierande_part', 'avgransad']
     list_filter = ['avgransad', 'kartlaggande_myndighet', 'initierande_part', 'etjanst']
 
     formfield_overrides = { models.ManyToManyField: {'widget': CheckboxSelectMultiple()},
@@ -44,6 +45,7 @@ class KravAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Uppgiftskrav', {'fields':['namn',
                                     'verksamhetsomrade',
+                                    'kravomrade',
                                     'ansvarig_myndighet',
                                     'kartlaggande_myndighet',   # utgår på sikt eftersom UKR i förlängningen ska användas a v alla
                                     # 'forfattning', # förifyllt från Malin, anges
