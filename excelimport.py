@@ -9,19 +9,22 @@ from pprint import pprint
 
 from openpyxl import load_workbook
 
-assert sys.version_info < (3,0,0), "String handling not Py3 compliant, plz rewrite"
+assert sys.version_info < (
+    3, 0, 0), "String handling not Py3 compliant, plz rewrite"
 
-def myndighet_id(d,key):
+
+def myndighet_id(d, key):
     assert key
-    if not key in d:
-        d[key] = {'id': len(d)+1,
+    if key not in d:
+        d[key] = {'id': len(d) + 1,
                   'name': key}
     return d[key]['id']
+
 
 def value(row, idx, max_length=None):
     val = row[idx].internal_value
     if isinstance(val, float):
-        return unicode(int(val)) # 0.0 -> '0'
+        return unicode(int(val))  # 0.0 -> '0'
     elif not val:
         return ""
     if not isinstance(val, unicode):
@@ -33,6 +36,7 @@ def value(row, idx, max_length=None):
 
 fsrefs = defaultdict(int)
 
+
 def lagrum(row, idx):
     val = value(row, idx)
     ds = parse_lagrum(val)
@@ -42,6 +46,7 @@ def lagrum(row, idx):
     res = format_lagrum(ds)
     # print("%s => %s => %s" % (val, ds, res))
     return res
+
 
 def parse_lagrum(s):
     """
@@ -106,32 +111,37 @@ def parse_lagrum(s):
     for ref in s.split(";"):
         ref = ref.strip()
         # now you've got two problems
-        m = re.match('(?P<fs>[A-ZÅÄÖ\-]*FS)\s*(?P<fsnr>\d{4}:\d+)\s+((?P<kap>\d+(?:\s*[a-h]|))\s+|)(?P<par>\d+\s*[abcd]?)(?P<rest>.*)$', ref)
+        m = re.match(
+            '(?P<fs>[A-ZÅÄÖ\-]*FS)\s*(?P<fsnr>\d{4}:\d+)\s+((?P<kap>\d+(?:\s*[a-h]|))\s+|)(?P<par>\d+\s*[abcd]?)(?P<rest>.*)$', ref)
         if not m:
             # looser regex, matches only FS
-            m = re.match('(?P<fs>[A-ZÅÄÖ\-]*FS)\s*(?P<fsnr>\d{4}:\d+)(?P<rest>.*)$', ref)
+            m = re.match(
+                '(?P<fs>[A-ZÅÄÖ\-]*FS)\s*(?P<fsnr>\d{4}:\d+)(?P<rest>.*)$', ref)
             if not m:
                 # eurlex regex
-                m = re.match('3(?P<year>\d{4})(?P<doktyp>R)(?P<ynr>\d+)(\s+(?P<zart>\d+(\s?[A-Ha-h]?|))|)(?P<rest>.*)$', ref)
-                #if m:
+                m = re.match(
+                    '3(?P<year>\d{4})(?P<doktyp>R)(?P<ynr>\d+)(\s+(?P<zart>\d+(\s?[A-Ha-h]?|))|)(?P<rest>.*)$', ref)
+                # if m:
                 #    from pdb import set_trace; set_trace()
         if m:
             # filter out named groups that has None for value
-            res.append(dict([(k,v) for (k, v) in m.groupdict().items() if v]))
+            res.append(dict([(k, v) for (k, v) in m.groupdict().items() if v]))
             if 'rest' in res[-1]:
                 # print("WARNING: Couldn't understand tail %r on %r" % (res[-1]['rest'], ref))
                 del res[-1]['rest']
             # canonicalize "18a" => "18 a"
             for fld in ('kap', 'par', 'zart'):
-                if fld not in res[-1]: continue
-                groups = re.match("(\d+)(?: *([A-Ha-h])|)", res[-1][fld]).groups()
+                if fld not in res[-1]:
+                    continue
+                groups = re.match(
+                    "(\d+)(?: *([A-Ha-h])|)", res[-1][fld]).groups()
                 if groups[1]:
                     # print("Groups b4 lc:" + repr(groups))
                     groups = tuple([x.lower() for x in groups])
                     # print("Groups after lc:" + repr(groups))
                     res[-1][fld] = "%s %s" % groups
     return res
-    
+
 
 def format_lagrum(*lagrum):
     """
@@ -140,11 +150,19 @@ def format_lagrum(*lagrum):
     """
     return ("3 kap. 3 § lagen (2008:145) om statligt tandvårdsstöd")
 
-
+# make note of in a {value: id} dict
 def note(row, idx, dictionary):
     val = value(row, idx)
     if val not in dictionary and val:
-        dictionary[val] = len(dictionary)+1
+        dictionary[val] = len(dictionary) + 1
+    return val
+
+
+def note2(row, idx, idx2, dictionary):
+    val = value(row, idx)
+    val2 = value(row, idx2)
+    if (val, val2) not in dictionary and val:
+        dictionary[(val, val2)] = len(dictionary) + 1
     return val
 
 
@@ -156,6 +174,7 @@ def choice(row, idx, choices, default=None):
         return lchoices.index(lval)
     else:
         if val:
+            from pudb import set_trace; set_trace()
             print("WARNING (%s): %r not in %r" %
                   (row[3].internal_value, val, choices))
         if default is not None:  # must be able to be 0 or other falsieness
@@ -164,30 +183,150 @@ def choice(row, idx, choices, default=None):
             raise KeyError(val)
 
 
+# just wrap the result of choice in a list for the time beeing
+def manychoice(row, idx, choices, default=None):
+    return [choice(row, idx, choices, default)]
+
+
 def integer(row, idx):
     val = value(row, idx)
     if val and val.isdigit():
         return int(val)
     # else return None
 
+def has(row, idx, sought_value):
+    val = value(row, idx)
+    return "x" in val.lower()
+
 def nbf(row, idx):
+    """Given a row and index to that row, return 0 if it contains "Nej", 1
+    if it contains "Ja", and -1 otherwise (eg empty).
+
+    """
+    
     return choice(row, idx, ('Nej', 'Ja'), -1)
-    #val = value(row, idx)
-    #if val:
+    # val = value(row, idx)
+    # if val:
     #    return val == "Ja"
-    #else:
+    # else:
     #    return None
 
-def many(row, idx):
+
+def many(row, idx, filter=None):
+    """Given a row and a column index to that row, extract the value from
+    that cell and split the contents into a comma separated list.
+
+    :param row: A excel row
+    :param idx: A numerical index representing the ordinal of the sought column
+    :param filter: A callable that returns True or False for each element in the extracted list. Only elements returning True will be returned. If None, accepts all values.
+    """
     val = value(row, idx)
+    if filter is None:
+        filter = lambda x: True
     if val:
         l = val.split(",")
-        return [[x.strip().upper()] for x in l if x.strip()]
+        return [[x.strip().upper()] for x in l if x.strip() and filter(x)]
     else:
         return []
-        
+
+def avgransad(k):
+    if k['etjanst'] == 1:
+        return False
+    if k['volymer_2012'] < 10 and k['antal_foretag'] < 10:
+        return True
+    if k['svarighet_etjanst'] == 6:  # endast maskin-till-maskin
+        return True
+    if k['svarighet_ej_etjanst'] == 1 and k['etjanst'] != 1: # ingen info på myndhemsida, ingen etjänst
+        return True
+    return False
+
+
+def make_groups_and_users(data, myndighet):
+    # append information to the `data` list for groups and users
+    # needed to be created
+    for name, id in myndighet.items():
+        data.append({'model': 'auth.group',  # 'django.contrib.auth.models.Group',
+                     'pk': id,
+                     'fields': {'name': name,
+                                'permissions': [["add_krav", "register", "krav"],
+                                                ["change_krav",
+                                                    "register", "krav"],
+                                                ["delete_krav",
+                                                    "register", "krav"],
+                                                ["add_verksamhetsomrade",
+                                                    "register", "verksamhetsomrade"],
+                                                ["change_verksamhetsomrade",
+                                                    "register", "verksamhetsomrade"],
+                                                ["delete_verksamhetsomrade", "register", "verksamhetsomrade"]]
+                                }
+                     })
+
+    # add a user for each as well. The passwd is "test"
+    names = {"Företagsdatanämnden": '',
+             "Försäkringskassan": 'dan',
+             "Kronofogdemyndigheten": 'eva',
+             "Arbetsförmedlingen": 'clas',
+             "Bolagsverket": 'helena',
+             "Bokföringsnämnden": 'olle',
+             "Patentombudsnämnden": 'karin',
+             "Livsmedelsverket": 'stig',
+             "SCB": 'johan',
+             "Medlingsinstitutet": 'claes',
+             "Statens energimyndighet": 'erik',
+             "Tillväxtanalys": 'hjalmarsson',
+             "Finansinspektionen": 'martin',
+             "Naturvårdsverket": 'maria',
+             "Skolverket": 'ekstrom',
+             "Skogsstyrelsen": 'monika',
+             "Tillväxtverket": 'anna',
+             "Trafikanalys": 'brita',
+             "Trafikverket": 'gunnar',
+             "Tullverket": 'therese',
+             "Skatteverket": 'lars',
+             "Transportstyrelsen": 'widlert',
+             "Jordbruksverket": 'leif'}
+    for name, id in myndighet.items():
+        username = names.get(name,
+                             name.replace(" ", "").lower())
+        data.append({'model': 'auth.user',
+                     'pk': id,
+                     "fields": {
+                         "username": username,
+                         "first_name": "",
+                         "last_name": "",
+                         "is_active": True,
+                         "is_superuser": False,
+                         "is_staff": True,
+                         "last_login": "2014-02-07T13:38:58Z",
+                         "groups": [[name]],
+                         "user_permissions": [],
+                         "password": "pbkdf2_sha256$12000$jn0OqvMfv7Ys$pEaHcw+ruR7OJJL8qDa3iWC+P8Vu74fUTuD04vDHAfI=",
+                         "email": "",
+                         "date_joined": "2014-02-07T13:38:58Z"
+                     }})
+    # and some super users
+    for (offset, name) in enumerate(('staffan', 'cecilia', 'magnus', 'maryam', 'janne', 'annika', 'bengt')):
+        data.append({'model': 'auth.user',
+                     'pk': len(myndighet) + offset + 1,
+                     "fields": {
+                         "username": name,
+                         "first_name": "",
+                         "last_name": "",
+                         "is_active": True,
+                         "is_superuser": True,
+                         "is_staff": True,
+                         "last_login": "2014-02-07T13:38:58Z",
+                         "groups": [],
+                         "user_permissions": [],
+                         "password": "pbkdf2_sha256$12000$jn0OqvMfv7Ys$pEaHcw+ruR7OJJL8qDa3iWC+P8Vu74fUTuD04vDHAfI=",
+                         "email": "",
+                         "date_joined": "2014-02-07T13:38:58Z"
+                     }})
+    
+
+
 def make_fixture(newdata, olddata, fixture):
-    # 1: Extract all Kravs (and create a list of Myndigheter as 
+    # 1: Extract all Kravs (and create a list of Myndigheter as
     # django.contrib.auth.models.Group as well)
     print("Opening new data %s" % newdata)
     ws = load_workbook(newdata, use_iterators=True).get_active_sheet()
@@ -197,12 +336,12 @@ def make_fixture(newdata, olddata, fixture):
     ANSVARIG_MYNDIGHET = 1
     KARTLAGGANDE_MYNDIGHET = 2
     ID = 3
-    NAMN = 4 # UPPGIFTSKRAV
-    FORFATTNING = 5 # deprecated
-    PARAGRAF = 6 # deprecated
+    NAMN = 4  # UPPGIFTSKRAV
+    FORFATTNING = 5  # deprecated
+    PARAGRAF = 6  # deprecated
     LAGRUM = 7
     URSPRUNG = 8
-    BESKRIVNING = 9 # deprecated 
+    BESKRIVNING = 9  # deprecated
     ANTECKNING = 10
     KORT_BESKRIVNING = 11
     LEDER_TILL_INSAMLING = 12
@@ -236,62 +375,75 @@ def make_fixture(newdata, olddata, fixture):
     myndighet['Företagsdatanämnden'] = 1
 
     print("Enumerating Krav")
+    avgcnt = 0
     for (cnt, row) in enumerate(ws.iter_rows()):
         if cnt < 1 or not row[ID].internal_value:
             continue
-        
-        krav[row[ID].internal_value] = {'id': cnt,
-                                        'kravid': value(row, ID, max_length=7),
-                                        'verksamhetsomrade': [note(row, VERKSAMHETSOMRADE, verksamhetsomrade)],
-                                        'ansvarig_myndighet': [note(row, ANSVARIG_MYNDIGHET, myndighet)],
-                                        'kartlaggande_myndighet': [note(row, KARTLAGGANDE_MYNDIGHET, myndighet)],
-                                        'namn': value(row, NAMN),
-                                        'forfattning': value(row, FORFATTNING, max_length=50),
-                                        'paragraf': value(row, PARAGRAF, max_length=50),
-                                        'lagrum': lagrum(row, LAGRUM),
-                                        'ursprung': choice(row, URSPRUNG, (False, "Nationellt", "EU mm"), default=-1),
-                                        'beskrivning': value(row, BESKRIVNING),
-                                        'anteckning': value(row, ANTECKNING),
-                                        'kortbeskrivning': value(row, KORT_BESKRIVNING),
-                                        'leder_till_insamling': nbf(row, LEDER_TILL_INSAMLING),
-                                        'egna_noteringar': value(row, EGNA_NOTERINGAR),
-                                        'kalenderstyrt': nbf(row, KALENDERSTYRT),
-                                        'periodicitet': choice(row, PERIODICITET, ('Inte relevant', 'Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December', 'Veckovis', 'Månadsvis', 'Kvartalsvis', 'Årsvis (ej särskilt datum)'), default=-1),
-                                        'handelsestyrt': nbf(row, HANDELSESTYRT),
-                                        'initierande_part': choice(row, INITIERANDE_PART, (False, 'Myndigheten', 'Företaget', 'Båda'), default=-1),
-                                        'ovrigt_nar': value(row, OVRIGT_NAR),
-                                        'bransch': many(row, BRANSCH),
-                                        'arbetsgivare': nbf(row, ARBETSGIVARE),
-                                        'foretagsform': many(row, FORETAGSFORM),
-                                        'storlek': nbf(row, STORLEK),
-                                        'storlekskriterier': value(row, STORLEKSKRITERIER),
-                                        'ovriga_urvalskriterier': value(row, OVRIGA_URVALSKRITERIER),
-                                        'antal_foretag': integer(row, ANTAL_FORETAG),
-                                        'annan_ingivare': nbf(row, ANNAN_INGIVARE),
-                                        'underskrift': nbf(row, UNDERSKRIFT),
-                                        'etjanst': nbf(row, ETJANST),
-                                        'svarighet_ej_etjanst': choice(row, SVARIGHET_EJ_ETJANST, ('0','1','2','3','4'), default=-1),
-                                        'svarighet_etjanst': choice(row, SVARIGHET_ETJANST, (False, False, False, False, False, '5','6','7'), default=-1),
-                                        'volymer_tidigare': integer(row, VOLYMER_TIDIGARE),
-                                        'volymer_2012': integer(row, VOLYMER_2012),
-                                        'volymer_etjanst': integer(row, VOLYMER_ETJANST),
-                                        'ovrigt_hur': value(row, OVRIGT_HUR),
-                                        'uppgifter': []
-                           }
-        sys.stdout.write(".")
+        k = {
+            'id': cnt,
+            'kravid': value(row, ID, max_length=7),
+            'ansvarig_myndighet': [note(row, ANSVARIG_MYNDIGHET, myndighet)],
+            'kartlaggande_myndighet': [note(row, KARTLAGGANDE_MYNDIGHET, myndighet)],
+            'verksamhetsomrade': [note2(row, VERKSAMHETSOMRADE, KARTLAGGANDE_MYNDIGHET, verksamhetsomrade)],
+            'namn': value(row, NAMN),
+            'forfattning': value(row, FORFATTNING, max_length=50),
+            'paragraf': value(row, PARAGRAF, max_length=50),
+            'lagrum': value(row, LAGRUM),
+            'ursprung': choice(row, URSPRUNG, (False, "Nationellt", "EU mm"), default=-1),
+            'beskrivning': value(row, BESKRIVNING),
+            'anteckning': value(row, ANTECKNING),
+            'kortbeskrivning': value(row, KORT_BESKRIVNING),
+            'leder_till_insamling': nbf(row, LEDER_TILL_INSAMLING),
+            'egna_noteringar': value(row, EGNA_NOTERINGAR),
+            'kalenderstyrt': nbf(row, KALENDERSTYRT),
+            'periodicitet': manychoice(row, PERIODICITET, (False, 'Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December', 'Veckovis', 'Månadsvis', 'Kvartalsvis', 'Årsvis (ej särskilt datum)', 'Inte relevant'), default=17),
+            'handelsestyrt': nbf(row, HANDELSESTYRT),
+            'initierande_part': choice(row, INITIERANDE_PART, (False, 'Myndigheten', 'Företaget', 'Båda'), default=-1),
+            'ovrigt_nar': value(row, OVRIGT_NAR),
+            'beror_bransch': not(has(row, BRANSCH, "x")), # False if contains "X", True otherwise
+            'bransch': many(row, BRANSCH, lambda val: val.lower() != "x"), # filter out "X"
+            'arbetsgivare': nbf(row, ARBETSGIVARE),
+            'beror_foretagsform': not(has(row, FORETAGSFORM, "x")), # False if contains "X", True otherwise
+            'foretagsform': many(row, FORETAGSFORM, lambda val: val.lower() != "x"),# filter out "X"
+            'storlek': nbf(row, STORLEK),
+            'storlekskriterier': value(row, STORLEKSKRITERIER),
+            'ovriga_urvalskriterier': value(row, OVRIGA_URVALSKRITERIER),
+            'antal_foretag': integer(row, ANTAL_FORETAG),
+            'annan_ingivare': nbf(row, ANNAN_INGIVARE),
+            'underskrift': nbf(row, UNDERSKRIFT),
+            'etjanst': nbf(row, ETJANST),
+            'svarighet_ej_etjanst': choice(row, SVARIGHET_EJ_ETJANST, ('0', '1', '2', '3', '4'), default=-1),
+            'svarighet_etjanst': choice(row, SVARIGHET_ETJANST, (False, False, False, False, False, '5', '6', '7'), default=-1),
+            'volymer_tidigare': integer(row, VOLYMER_TIDIGARE),
+            'volymer_2012': integer(row, VOLYMER_2012),
+            'volymer_etjanst': integer(row, VOLYMER_ETJANST),
+            'ovrigt_hur': value(row, OVRIGT_HUR),
+            'uppgifter': []
+        }
+        if (not k['leder_till_insamling']):
+            # not a Uppgiftskrav, don't import this at all
+            sys.stdout.write("X")
+        else:
+            k['avgransad'] = avgransad(k)
+            if k['avgransad']:
+                avgcnt += 1 
+            sys.stdout.write("A" if k['avgransad'] else ".")
+            krav[row[ID].internal_value] = k
+            
         sys.stdout.flush()
-    print("\nDone, %s krav (%s myndigheter) in %s" % (len(krav), len(myndighet), newdata))
+    print("\nDone, %s krav (%s avgransade, %s myndigheter) in %s" %
+          (len(krav), avgcnt, len(myndighet), newdata))
 
     # 2: Find information about Grundläggande uppgifter (GU)
     print("Opening old data %s" % olddata)
     ws = load_workbook(olddata, use_iterators=True).get_active_sheet()
     print("Enumerating Uppgifter")
     rows = ws.iter_rows()
-    next(rows) # 1st row contains no usable data
+    next(rows)  # 1st row contains no usable data
     firstrow = next(rows)
     for (cnt, cell) in enumerate(firstrow[30:]):
-        uppgift[cnt] = {'id': cnt+1,
-                        'uppgiftid': 'UD%04d' % (cnt+1),
+        uppgift[cnt] = {'id': cnt + 1,
+                        'uppgiftid': 'UD%04d' % (cnt + 1),
                         'namn': cell.internal_value}
 
     print("Done, found %s uppgifter" % len(uppgift))
@@ -307,216 +459,188 @@ def make_fixture(newdata, olddata, fixture):
             # print("Old data contained krav %s which is not present in new data" % row[ID].internal_value)
             continue
 
-        d['uppgifter'] = [cnt+1 for (cnt, x) in enumerate(row[30:]) if x.internal_value in ('Obligatorisk', 'Frivillig')]
+        d['uppgifter'] = [
+            cnt + 1 for (cnt, x) in enumerate(row[30:]) if x.internal_value in ('Obligatorisk', 'Frivillig')]
         sys.stdout.write(".")
         sys.stdout.flush()
 
     print("\nDone, now reformatting to fixture format")
     # 4: reformat everything to appropriate json dicts
-
-    # 4.1 hardcode Bransch / företagsform
+ 
+    # 4.1 hardcode Bransch / företagsform / periodicitet
     data = [{'model': 'register.bransch',
              'pk': 1,
              'fields': {'snikod': 'A',
                         'beskrivning': 'Jordbruk, skogsbruk och fiske'}},
             {'model': 'register.bransch',
              'pk': 2,
-             'fields': {'snikod': 'B', 
+             'fields': {'snikod': 'B',
                         'beskrivning': 'Utvinning av mineral'}},
             {'model': 'register.bransch',
              'pk': 3,
-             'fields': {'snikod': 'C', 
-                         'beskrivning': 'Tillverkning'}},
+             'fields': {'snikod': 'C',
+                        'beskrivning': 'Tillverkning'}},
             {'model': 'register.bransch',
              'pk': 4,
-             'fields': {'snikod': 'D', 
+             'fields': {'snikod': 'D',
                         'beskrivning': 'Försörjning av el, gas, värme och kyla'}},
             {'model': 'register.bransch',
              'pk': 5,
-             'fields': {'snikod': 'E', 
+             'fields': {'snikod': 'E',
                         'beskrivning': 'Vattenförsörjning; avloppsrening, avfallshantering och sanering'}},
             {'model': 'register.bransch',
              'pk': 6,
-             'fields': {'snikod': 'F', 
+             'fields': {'snikod': 'F',
                         'beskrivning': 'Byggverksamhet'}},
             {'model': 'register.bransch',
              'pk': 7,
-             'fields': {'snikod': 'G', 
+             'fields': {'snikod': 'G',
                         'beskrivning': 'Handel; reparation av motorfordon och motorcyklar'}},
             {'model': 'register.bransch',
              'pk': 8,
-             'fields': {'snikod': 'H', 
+             'fields': {'snikod': 'H',
                         'beskrivning': 'Transport och magasinering'}},
             {'model': 'register.bransch',
              'pk': 9,
-             'fields': {'snikod': 'I', 
+             'fields': {'snikod': 'I',
                         'beskrivning': 'Hotell- och restaurangverksamhet'}},
             {'model': 'register.bransch',
              'pk': 10,
-             'fields': {'snikod': 'J', 
+             'fields': {'snikod': 'J',
                         'beskrivning': 'Informations- och kommunikationsverksamhet'}},
             {'model': 'register.bransch',
              'pk': 11,
-             'fields': {'snikod': 'K', 
+             'fields': {'snikod': 'K',
                         'beskrivning': 'Finans- och försäkringsverksamhet'}},
             {'model': 'register.bransch',
              'pk': 12,
-             'fields': {'snikod': 'L', 
+             'fields': {'snikod': 'L',
                         'beskrivning': 'Fastighetsverksamhet'}},
             {'model': 'register.bransch',
              'pk': 13,
-             'fields': {'snikod': 'M', 
+             'fields': {'snikod': 'M',
                         'beskrivning': 'Verksamhet inom juridik, ekonomi, vetenskap och teknik'}},
             {'model': 'register.bransch',
              'pk': 14,
-             'fields': {'snikod': 'N', 
+             'fields': {'snikod': 'N',
                         'beskrivning': 'Uthyrning, fastighetsservice, resetjänster och andra stödtjänster'}},
             {'model': 'register.bransch',
              'pk': 15,
-             'fields': {'snikod': 'O', 
+             'fields': {'snikod': 'O',
                         'beskrivning': 'Offentlig förvaltning och försvar; obligatorisk socialförsäkring'}},
             {'model': 'register.bransch',
              'pk': 16,
-             'fields': {'snikod': 'P', 
+             'fields': {'snikod': 'P',
                         'beskrivning': 'Utbildning'}},
             {'model': 'register.bransch',
              'pk': 17,
-             'fields': {'snikod': 'Q', 
+             'fields': {'snikod': 'Q',
                         'beskrivning': 'Vård och omsorg; sociala tjänster'}},
             {'model': 'register.bransch',
              'pk': 18,
-             'fields': {'snikod': 'R', 
+             'fields': {'snikod': 'R',
                         'beskrivning': 'Kultur, nöje och fritid'}},
             {'model': 'register.bransch',
              'pk': 19,
-             'fields': {'snikod': 'S', 
+             'fields': {'snikod': 'S',
                         'beskrivning': 'Annan serviceverksamhet'}},
             {'model': 'register.bransch',
              'pk': 20,
-             'fields': {'snikod': 'T', 
+             'fields': {'snikod': 'T',
                         'beskrivning': 'Förvärvsarbete i hushåll; hushållens produktion av diverse varor och tjänster för eget bruk'}},
             {'model': 'register.bransch',
              'pk': 21,
-             'fields': {'snikod': 'U', 
+             'fields': {'snikod': 'U',
                         'beskrivning': 'Verksamhet vid internationella organisationer, utländska ambassader o.d.'}},
-            {'model': 'register.bransch',
-             'pk': 22,
-             'fields': {'snikod': 'X', 
-                        'beskrivning': 'Avser alla'}},
             {'model': 'register.foretagsform',
              'pk': 1,
-             'fields': {'formkod': 'E', 
+             'fields': {'formkod': 'E',
                         'beskrivning': 'Enskild näringsidkare'}},
             {'model': 'register.foretagsform',
              'pk': 2,
-             'fields': {'formkod': 'AB', 
+             'fields': {'formkod': 'AB',
                         'beskrivning': 'Aktiebolag'}},
             {'model': 'register.foretagsform',
              'pk': 3,
-             'fields': {'formkod': 'HB', 
+             'fields': {'formkod': 'HB',
                         'beskrivning': 'Handelsbolag'}},
             {'model': 'register.foretagsform',
              'pk': 4,
-             'fields': {'formkod': 'KB', 
+             'fields': {'formkod': 'KB',
                         'beskrivning': 'Kommanditbolag'}},
             {'model': 'register.foretagsform',
              'pk': 5,
-             'fields': {'formkod': 'BRF', 
+             'fields': {'formkod': 'BRF',
                         'beskrivning': 'Bostadsrättsförening'}},
             {'model': 'register.foretagsform',
              'pk': 6,
-             'fields': {'formkod': 'EK', 
+             'fields': {'formkod': 'EK',
                         'beskrivning': 'Ekonomisk förening'}},
             {'model': 'register.foretagsform',
              'pk': 7,
-             'fields': {'formkod': 'A', 
+             'fields': {'formkod': 'A',
                         'beskrivning': 'Annan företagsform'}},
-            {'model': 'register.foretagsform',
+            {'model': 'register.periodicitet',
+             'pk': 1,
+             'fields': {'beskrivning': 'Januari'}},
+            {'model': 'register.periodicitet',
+             'pk': 2,
+             'fields': {'beskrivning': 'Februari'}},
+            {'model': 'register.periodicitet',
+             'pk': 3,
+             'fields': {'beskrivning': 'Mars'}},
+            {'model': 'register.periodicitet',
+             'pk': 4,
+             'fields': {'beskrivning': 'April'}},
+            {'model': 'register.periodicitet',
+             'pk': 5,
+             'fields': {'beskrivning': 'Maj'}},
+            {'model': 'register.periodicitet',
+             'pk': 6,
+             'fields': {'beskrivning': 'Juni'}},
+            {'model': 'register.periodicitet',
+             'pk': 7,
+             'fields': {'beskrivning': 'Juli'}},
+            {'model': 'register.periodicitet',
              'pk': 8,
-             'fields': {'formkod': 'X', 
-                        'beskrivning': 'Avser alla'}},
+             'fields': {'beskrivning': 'Augusti'}},
+            {'model': 'register.periodicitet',
+             'pk': 9,
+             'fields': {'beskrivning': 'September'}},
+            {'model': 'register.periodicitet',
+             'pk': 10,
+             'fields': {'beskrivning': 'Oktober'}},
+            {'model': 'register.periodicitet',
+             'pk': 11,
+             'fields': {'beskrivning': 'November'}},
+            {'model': 'register.periodicitet',
+             'pk': 12,
+             'fields': {'beskrivning': 'December'}},
+            {'model': 'register.periodicitet',
+             'pk': 13,
+             'fields': {'beskrivning': 'Veckovis'}},
+            {'model': 'register.periodicitet',
+             'pk': 14,
+             'fields': {'beskrivning': 'Månadsvis'}},
+            {'model': 'register.periodicitet',
+             'pk': 15,
+             'fields': {'beskrivning': 'Kvartalsvis'}},
+            {'model': 'register.periodicitet',
+             'pk': 16,
+             'fields': {'beskrivning': 'Årsvis (ej särskilt datum)'}},
+            {'model': 'register.periodicitet',
+             'pk': 17,
+             'fields': {'beskrivning': 'Inte relevant'}},
             ]
-    
-    # 4.2 the rest
-    for name, id in myndighet.items():
-        data.append({'model': 'auth.group', # 'django.contrib.auth.models.Group',
-                     'pk': id, 
-                     'fields': {'name': name,
-                                'permissions': [["add_krav", "register", "krav"],
-                                                ["change_krav", "register", "krav"],
-                                                ["delete_krav", "register", "krav"],
-                                                ["add_verksamhetsomrade", "register", "verksamhetsomrade"],
-                                                ["change_verksamhetsomrade", "register", "verksamhetsomrade"],
-                                                ["delete_verksamhetsomrade", "register", "verksamhetsomrade"]]
-                                            } 
-                     })
 
-    # add a user for each as well. The passwd is "test"
-    names = {"Företagsdatanämnden": '',
-             "Försäkringskassan": 'dan', 
-             "Kronofogdemyndigheten": 'eva', 
-             "Arbetsförmedlingen": 'clas', 
-             "Bolagsverket": 'helena',
-             "Bokföringsnämnden": 'olle',
-             "Patentombudsnämnden": 'karin', 
-             "Livsmedelsverket": 'stig', 
-             "SCB": 'johan',
-             "Medlingsinstitutet": 'claes', 
-             "Statens energimyndighet": 'erik', 
-             "Tillväxtanalys": 'hjalmarsson', 
-             "Finansinspektionen": 'martin', 
-             "Naturvårdsverket": 'maria', 
-             "Skolverket": 'ekstrom', 
-             "Skogsstyrelsen": 'monika', 
-             "Tillväxtverket": 'anna',
-             "Trafikanalys": 'brita', 
-             "Trafikverket": 'gunnar', 
-             "Tullverket": 'therese', 
-             "Skatteverket": 'lars',
-             "Transportstyrelsen": 'widlert', 
-             "Jordbruksverket": 'leif'}
-    for name, id in myndighet.items():
-        username = names.get(name,
-                             name.replace(" ","").lower())
-        data.append({'model': 'auth.user',
-                     'pk': id,
-                     "fields": {
-                         "username": username,
-                         "first_name": "", 
-                         "last_name": "", 
-                         "is_active": True, 
-                         "is_superuser": False, 
-                         "is_staff": True, 
-                         "last_login": "2014-02-07T13:38:58Z", 
-                         "groups": [[name]], 
-                         "user_permissions": [], 
-                         "password": "pbkdf2_sha256$12000$jn0OqvMfv7Ys$pEaHcw+ruR7OJJL8qDa3iWC+P8Vu74fUTuD04vDHAfI=", 
-                         "email": "", 
-                         "date_joined": "2014-02-07T13:38:58Z"
-                         }})
-    # and some super users
-    for (offset, name) in enumerate(('staffan', 'cecilia', 'magnus', 'maryam', 'janne', 'annika', 'bengt')):
-        data.append({'model': 'auth.user',
-                     'pk': len(myndighet)+offset+1,
-                     "fields": {
-                         "username": name,
-                         "first_name": "", 
-                         "last_name": "", 
-                         "is_active": True, 
-                         "is_superuser": True, 
-                         "is_staff": True, 
-                         "last_login": "2014-02-07T13:38:58Z", 
-                         "groups": [], 
-                         "user_permissions": [], 
-                         "password": "pbkdf2_sha256$12000$jn0OqvMfv7Ys$pEaHcw+ruR7OJJL8qDa3iWC+P8Vu74fUTuD04vDHAfI=", 
-                         "email": "", 
-                         "date_joined": "2014-02-07T13:38:58Z"
-                         }})
-        
-    for name, id in verksamhetsomrade.items():
+
+    make_groups_and_users(data, myndighet)  # -- now done separately
+    
+    for (name, myndname), id in verksamhetsomrade.items():
         data.append({'model': 'register.verksamhetsomrade',
                      'pk': id,
-                     'fields': {'omrade': name}})
+                     'fields': {'omrade': name,
+                                'myndighet' :  [myndname]}})
 
     for u in uppgift.values():
         data.append({'model': 'register.uppgift',
@@ -535,37 +659,37 @@ def make_fixture(newdata, olddata, fixture):
                      'pk': k['id'],
                      'fields': ck
                      })
-        
+
     # 5: aaaand we're done
     print("Serializing to JSON as %s" % fixture)
     with open(fixture, "w") as fp:
         json.dump(data, fp, indent=4)
     print("Wrote %s entries to %s" % (len(data), fixture))
 
-    # 6: temp stats
-    # pprint(sorted([(v, k) for k, v in fsrefs.items()]))
+    # the below code attempted to map FS refs to lawyer-readable labels
+    #     res = "{"
+    #     with open("sfstitles.nt") as fp:
+    #         for line in fp:
+    #             fsnr, title = re.match(
+    #                 '<http://rinfo.lagrummet.se/publ/sfs/(\d+:[^>]+)> <http://purl.org/dc/terms/title> "([^"]*)"', line).groups()
+    #         res += '"%s": "%s"' % (fsnr, title)
+    #     res += "}"
+    #     sfstitles = json.loads(res)
+    # 
+    #     for k, v in fsrefs.items():
+    #         fs, fsnr = k
+    #         if fs == "SFS":
+    #             name = sfstitles[fsnr]
+    #         else:
+    #             name = "Myndighetens föreskrifter (%s) om X" % fsnr
+    #     print("(%r, %r): '%s'" % (k, v, name))
 
-    res = "{"
-    with open("sfstitles.nt") as fp:
-        for line in fp:
-            fsnr, title = re.match('<http://rinfo.lagrummet.se/publ/sfs/(\d+:[^>]+)> <http://purl.org/dc/terms/title> "([^"]*)"', line).groups()
-        res += '"%s": "%s"' % (fsnr, title)
-    res += "}"
-    sfstitles = json.loads(res)
-    
-    for k, v in fsrefs.items:
-        fs, fsnr = k
-        if fs == "SFS":
-            name = sfstitles[fsnr]
-        else:
-            name = "Myndighetens föreskrifter (%s) om X" % fsnr
-    print("(%r, %r): '%s'" % (k, v, name))
 
-    
 if __name__ == "__main__":
 
     if len(sys.argv) != 4:
-        print("Usage: %s [new excel data] [old excel data] [fixture]" % sys.argv[0])
+        print(
+            "Usage: %s [new excel data] [old excel data] [fixture]" % sys.argv[0])
         sys.exit()
 
     newdata = sys.argv[1]

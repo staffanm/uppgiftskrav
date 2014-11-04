@@ -1,0 +1,899 @@
+[
+    {
+        "pk": 1, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Uppgiftsl\u00e4mnarutredningen", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "F\u00f6rs\u00e4kringskassan", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Kronofogdemyndigheten", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Arbetsf\u00f6rmedlingen", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Bolagsverket", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Bokf\u00f6ringsn\u00e4mnden", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Patentombudsn\u00e4mnden", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Livsmedelsverket", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "SCB", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Medlingsinstitutet", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Statens energimyndighet", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Tillv\u00e4xtanalys", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Finansinspektionen", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Naturv\u00e5rdsverket", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Skolverket", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Skogsstyrelsen", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Tillv\u00e4xtverket", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Trafikanalys", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Trafikverket", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Tullverket", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Skatteverket", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Transportstyrelsen", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Jordbruksverket", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ]
+            ]
+        }
+    }
+]

@@ -70,6 +70,7 @@ class SearchForm(forms.Form):
     etjanst = forms.ChoiceField(choices=ANY+Krav.YESNO)
     ursprung = forms.ChoiceField(choices= ANY + Krav.URSPRUNG)
     leder_till_insamling = forms.ChoiceField(choices= ANY + Krav.YESNO, initial=Krav.JA)
+    avgransat = forms.BooleanField()
     
     
 def search(request):

@@ -38,6 +38,9 @@ class VerksamhetsomradeManager(models.Manager):
 class Verksamhetsomrade(models.Model):
     objects = VerksamhetsomradeManager()
     omrade = models.CharField("Område", max_length=100, unique=True)
+    myndighet = models.ForeignKey(authmodels.Group,
+                                  related_name="verksamhetsomrade_for",
+                                  help_text="Myndighet som har verksamhetsområdet")
 
     def __unicode__(self):
         return self.omrade
@@ -103,7 +106,14 @@ class Foretagsform(models.Model):
         verbose_name = "Företagsform"
         verbose_name_plural = "Företagsformer"
 
+class Periodicitet(models.Model):
+    beskrivning = models.CharField(max_length=50)
 
+    def __unicode__(self):
+        return "%s" % self.beskrivning
+
+    class Meta:
+        verbose_name_plural = "Periodiciteter"
 
 class KravManager(models.Manager):
     def get_by_natural_key(self, kravid):
@@ -115,6 +125,7 @@ fk = models.ForeignKey
 cf = models.CharField
 tf = models.TextField
 nbf = models.NullBooleanField
+bf = models.BooleanField
 intf = models.IntegerField
 url = models.URLField
 datef = models.DateField
@@ -149,27 +160,27 @@ class Krav(models.Model):
                            blank=True,
                            null=True,
                            verbose_name="Verksamhetsområde",
-                           help_text="""Förklaring: Indelning som vissa myndigheter själva önskat för att
+                           help_text="""Indelning som vissa myndigheter själva önskat för att
                            kunna dela upp arbetet.""")
 
     ansvarig_myndighet = fk(authmodels.Group,
                             related_name="ansvarig_for",
                             verbose_name="Ansvarig myndighet",
-                            help_text="""Förklaring: Myndighet som är ansvarig för ett uppgiftskrav. Samma
+                            help_text="""Myndighet som är ansvarig för ett uppgiftskrav. Samma
                             som kartläggande myndighet utom i de fall
                             insamling sker för annan myndighets  räkning.""")
 
     kartlaggande_myndighet = fk(authmodels.Group,
                                 related_name="kartlaggande_for",
                                 verbose_name="Kartläggande myndighet",
-                                help_text="""Förklaring:Myndighet som
+                                help_text="""Myndighet som
                                 kartlagt uppgiftskravet.""")
 
     # actual primary key, used in Meta.unique_together    
     kravid = cf("ID",
                 unique=True,
                 max_length=7,
-                help_text="""Förklaring:ID för uppgiftskravet.\nSka inte ändras.""") 
+                help_text="""ID för uppgiftskravet.\nSka inte ändras.""") 
 
     # krav = cf("Krav?", blank=True, max_length=10, help_text="What?")
     
@@ -191,15 +202,15 @@ class Krav(models.Model):
     paragraf = cf(max_length=50,
                   editable=False,
                   blank=True,
-                  help_text="""Förklaring: Hänvisning i aktuell författning.
+                  help_text="""Hänvisning i aktuell författning.
 
                   Om paragrafen är fel ska den inte ändras här. Skriv istället korrekt
                   författning under Författningsstöd.""")
 
     lagrum = cf("Författningsstöd",
-                max_length=255,
+                max_length=1000,
                 blank=True,
-                help_text="""Anvisning: Ange primärt författningsstöd där innehållet i
+                help_text="""Ange primärt författningsstöd där innehållet i
                 uppgiftskravet specificeras.
 
                 För EU-lagstiftning: Använd Celexnummer, artikel,
@@ -222,7 +233,7 @@ class Krav(models.Model):
 
     beskrivning = tf(editable=False,
                      blank=True,
-                     help_text="""Förklaring: Beskrivning av uppgiftskravet.
+                     help_text="""Beskrivning av uppgiftskravet.
     
                      Om beskrivningen är fel ska den inte ändras
                      här. Skriv istället under Kort beskrivning av
@@ -236,7 +247,7 @@ class Krav(models.Model):
 
     kortbeskrivning = tf("Kort beskrivning av uppgiftskravet",
                          max_length=300,
-                         help_text="""Anvisning: Beskriv kortfattat vad uppgiftskravet avser så att
+                         help_text="""Beskriv kortfattat vad uppgiftskravet avser så att
                          näringsidkare/företag förstår vad som ska
                          göras och om det berör dem. Max 300 tecken
                          inkl mellanslag.""")
@@ -249,7 +260,7 @@ class Krav(models.Model):
     YESNO = [(JA, 'Ja'),
              (NEJ, 'Nej')]
     leder_till_insamling = intf("Leder till insamling från företag",
-                               help_text="""Anvisning: Ange Ja om det är ett uppgiftskrav.
+                               help_text="""Ange Ja om det är ett uppgiftskrav.
                                Ange Nej om det inte är ett uppgiftskrav.""",
                                 choices=YESNO)
     galler_from = datef("Gäller från och med",
@@ -262,7 +273,7 @@ class Krav(models.Model):
                        help_text="""Ange datom då upppgiftskravet upphör att gälla om det är känt.""")
 
     egna_noteringar = tf(blank=True,
-                         help_text="""Anvisning: Ange egna noteringar i denna cell vid behov.
+                         help_text="""Ange egna noteringar i denna cell vid behov.
     
                          Noteringar från kartläggningens kolumn
                          Upphört? ligger i denna kolumn.""")
@@ -270,49 +281,50 @@ class Krav(models.Model):
     kalenderstyrt = intf(help_text="""Ange om uppgiften lämnas in utifrån förutbestämd tidpunkt.""",
                          choices=YESNO)
 
-    INTE_RELEVANT=0
-    JANUARI=1
-    FEBRUARI=2
-    MARS=3
-    APRIL=4
-    MAJ=5
-    JUNI=6
-    JULI=7
-    AUGUSTI=8
-    SEPTEMBER=9
-    OKTOBER=10
-    NOVEMBER=11
-    DECEMBER=12
-    VECKOVIS=13
-    MANADSVIS=14
-    KVARTALSVIS=15
-    ARSVIS=16
-    # FIXME: ska vara möjligt att ange flera av dessa? m2m?
-    periodicitet = intf(choices=[(INTE_RELEVANT, 'Inte relevant'),
-                                 (JANUARI, 'Januari'),
-                                 (FEBRUARI, 'Februari'),
-                                 (MARS, 'Mars'),
-                                 (APRIL, 'April'),
-                                 (MAJ, 'Maj'),
-                                 (JUNI, 'Juni'),
-                                 (JULI, 'Juli'),
-                                 (AUGUSTI, 'Augusti'),
-                                 (SEPTEMBER, 'September'),
-                                 (OKTOBER, 'Oktober'),
-                                 (NOVEMBER, 'November'),
-                                 (DECEMBER, 'December'),
-                                 (VECKOVIS, 'Veckovis'),
-                                 (MANADSVIS, 'Månadsvis'),
-                                 (KVARTALSVIS, 'Kvartalsvis'),
-                                 (ARSVIS, 'Årsvis (ej särskilt datum)'),
-                             ],
-                      help_text="""Ange vid vilken tidpunkt som uppgiften lämnas in om du svarat Ja
-                      under Kalenderstyrt. Om du svarat Nej under
-                      Kalenderstyrt är "Inte relevant" ifyllt.
+#    INTE_RELEVANT=0
+#    JANUARI=1
+#    FEBRUARI=2
+#    MARS=3
+#    APRIL=4
+#    MAJ=5
+#    JUNI=6
+#    JULI=7
+#    AUGUSTI=8
+#    SEPTEMBER=9
+#    OKTOBER=10
+#    NOVEMBER=11
+#    DECEMBER=12
+#    VECKOVIS=13
+#    MANADSVIS=14
+#    KVARTALSVIS=15
+#    ARSVIS=16
+#    # FIXME: ska vara möjligt att ange flera av dessa? m2m?
+#    periodicitet = intf(choices=[(INTE_RELEVANT, 'Inte relevant'),
+#                                 (JANUARI, 'Januari'),
+#                                 (FEBRUARI, 'Februari'),
+#                                 (MARS, 'Mars'),
+#                                 (APRIL, 'April'),
+#                                 (MAJ, 'Maj'),
+#                                 (JUNI, 'Juni'),
+#                                 (JULI, 'Juli'),
+#                                 (AUGUSTI, 'Augusti'),
+#                                 (SEPTEMBER, 'September'),
+#                                 (OKTOBER, 'Oktober'),
+#                                 (NOVEMBER, 'November'),
+#                                 (DECEMBER, 'December'),
+#                                 (VECKOVIS, 'Veckovis'),
+#                                 (MANADSVIS, 'Månadsvis'),
+#                                 (KVARTALSVIS, 'Kvartalsvis'),
+#                                 (ARSVIS, 'Årsvis (ej särskilt datum)'),
+#                             ],
+    periodicitet = m2m(Periodicitet,
+                       help_text="""Ange vid vilken tidpunkt som uppgiften lämnas in om du svarat Ja
+                       under Kalenderstyrt. Om du svarat Nej under
+                       Kalenderstyrt är "Inte relevant" ifyllt.
 
-                      Ange vanligast förekommande om det finns variationer i tidpunkter.
+                       Ange vanligast förekommande om det finns variationer i tidpunkter.
 
-                      Välj ett av värdena i listan. Vid t ex årlig uppgift, ange när på året.""")
+                       Välj ett av värdena i listan. Vid t ex årlig uppgift, ange när på året.""")
 
     handelsestyrt = intf("Händelsestyrt",
                         help_text="""Ange om uppgiften lämnas in utifrån händelse.""",
@@ -342,11 +354,11 @@ class Krav(models.Model):
                     help_text="""Ange eventuella övriga upplysningar - relevanta för kartläggningen
                     - som rör när uppgiftslämnande sker.""")
 
+    beror_bransch = intf("Berör specifik bransch",
+                         choices=YESNO)
     bransch = m2m(Bransch,
                   help_text="""Om uppgiftskravet endast berör specifik bransch, ange den/dessa på
-                  den översta nivån av SNI2007.
-
-                  Om uppgiftskravet inte berör specifik bransch, ange X (avser alla).""",
+                  den översta nivån av SNI2007.""",
                   validators=[not_empty_list])
 
     arbetsgivare = intf(help_text="""Ange om uppgiftskravet endast berör arbetsgivare.""",
@@ -361,12 +373,11 @@ class Krav(models.Model):
                    max_length=100,
                    help_text="Ange svaret med större än, mindre än- och likhetstecken följt av siffra > x < y = 200")
 
+    beror_foretagsform = intf("Berör specifika företagsformer",
+                              choices=YESNO)
     foretagsform = m2m(Foretagsform,
                        help_text="""Om uppgiftskravet endast berör specifika företagsformer, ange
-                       dessa.
-
-                       Om uppgiftskravet inte berör specifika
-                       företagsformer, ange X (avser alla).""",
+                       dessa.""",
                        validators=[not_empty_list])
 
     storlek = intf(blank=True,
@@ -395,9 +406,7 @@ class Krav(models.Model):
     antal_foretag = intf("Antal omfattade företag",
                          blank=True,
                          null=True,
-                         help_text="""Anvisning:
-                          
-                             Antal olika näringsidkare/företag som har
+                         help_text="""Antal olika näringsidkare/företag som har
                              haft ärenden hos myndigheten under 2012
                              till följd av uppgiftskravet.
 
@@ -445,9 +454,7 @@ class Krav(models.Model):
                                       (INFO_TILLGANGLIG, "Information om uppgiftskravet tillgänglig på myndighetens webbplats/er."),
                                       (BLANKETT_TILLGANGLIG, "Blankett tillgänglig."),
                                       (SMART_BLANKETT_TILLGANGLIG, "Interaktiv/smart blankett tillgänglig.")),
-                             help_text="""Anvisning:
-
-                             0 Uppgiftskravet kan endast fullgöras
+                             help_text="""0 Uppgiftskravet kan endast fullgöras
                              med e-tjänst.
                                   
                              1 Ingen information om uppgiftskravet
@@ -480,8 +487,7 @@ class Krav(models.Model):
                           choices=((ETJANST,"E-tjänst"),
                                    (MASKIN_TILL_MASKIN, "Maskin-till-maskin"),
                                    (EJ_ETJANST, "Ej e-tjänst")),
-                          help_text="""Anvisning: 
-                          5 E-tjänst
+                          help_text="""5 E-tjänst
                           Företaget kan interaktivt navigera, vägledas, ange uppgifter
                           och lämna in online med kvittens. 
 
@@ -531,6 +537,9 @@ class Krav(models.Model):
                   default=NEJ,
                   help_text="""Är uppgiftskravet aktuellt, gällande och fullständigt (inte under redigering)?""")
     uppgifter = models.ManyToManyField(Uppgift, blank=True, validators=[not_empty_list])
+
+    avgransad = bf("Avgränsat", default=False, help_text="Är uppgiftskravet av så liten praktisk betydelse att det inte ska omfattas av kartläggningen fram till 2015?")
+                   
 
     def __unicode__(self):
         return "%s: %s" % (self.kravid, self.namn)
