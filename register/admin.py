@@ -107,4 +107,9 @@ class KravAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(kartlaggande_myndighet__in=request.user.groups.all())
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "verksamhetsomrade":
+            kwargs["queryset"] = Verksamhetsomrade.objects.filter(myndighet__in=request.user.groups.all())
+        return super(KravAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)        
+    
 admin.site.register(Krav, KravAdmin)
