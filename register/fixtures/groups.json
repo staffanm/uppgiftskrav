@@ -3,7 +3,7 @@
         "pk": 1, 
         "model": "auth.group", 
         "fields": {
-            "name": "Uppgiftsl\u00e4mnarutredningen", 
+            "name": "Skatteverket", 
             "permissions": [
                 [
                     "add_krav", 
@@ -34,129 +34,79 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "lars", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_staff": true, 
+            "groups": [
+                [
+                    "Skatteverket"
+                ]
+            ], 
+            "user_permissions": [], 
+            "password": "pbkdf2_sha256$12000$HIc8Z6RaiI8H$vZzGCKKDiCkbk59U4zaR54kWvkHdNNaAKsNiexBPJiw=", 
+            "date_joined": "2014-02-07T13:38:58Z", 
+            "first_name": "", 
+            "is_superuser": false, 
+            "last_login": "2014-02-07T13:38:58Z", 
+            "email": ""
         }
     }, 
     {
         "pk": 2, 
-        "model": "auth.group", 
-        "fields": {
-            "name": "F\u00f6rs\u00e4kringskassan", 
-            "permissions": [
-                [
-                    "add_krav", 
-                    "register", 
-                    "krav"
-                ], 
-                [
-                    "change_krav", 
-                    "register", 
-                    "krav"
-                ], 
-                [
-                    "delete_krav", 
-                    "register", 
-                    "krav"
-                ], 
-                [
-                    "add_verksamhetsomrade", 
-                    "register", 
-                    "verksamhetsomrade"
-                ], 
-                [
-                    "change_verksamhetsomrade", 
-                    "register", 
-                    "verksamhetsomrade"
-                ], 
-                [
-                    "delete_verksamhetsomrade", 
-                    "register", 
-                    "verksamhetsomrade"
-                ]
-            ]
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "auth.group", 
-        "fields": {
-            "name": "Kronofogdemyndigheten", 
-            "permissions": [
-                [
-                    "add_krav", 
-                    "register", 
-                    "krav"
-                ], 
-                [
-                    "change_krav", 
-                    "register", 
-                    "krav"
-                ], 
-                [
-                    "delete_krav", 
-                    "register", 
-                    "krav"
-                ], 
-                [
-                    "add_verksamhetsomrade", 
-                    "register", 
-                    "verksamhetsomrade"
-                ], 
-                [
-                    "change_verksamhetsomrade", 
-                    "register", 
-                    "verksamhetsomrade"
-                ], 
-                [
-                    "delete_verksamhetsomrade", 
-                    "register", 
-                    "verksamhetsomrade"
-                ]
-            ]
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "auth.group", 
-        "fields": {
-            "name": "Arbetsf\u00f6rmedlingen", 
-            "permissions": [
-                [
-                    "add_krav", 
-                    "register", 
-                    "krav"
-                ], 
-                [
-                    "change_krav", 
-                    "register", 
-                    "krav"
-                ], 
-                [
-                    "delete_krav", 
-                    "register", 
-                    "krav"
-                ], 
-                [
-                    "add_verksamhetsomrade", 
-                    "register", 
-                    "verksamhetsomrade"
-                ], 
-                [
-                    "change_verksamhetsomrade", 
-                    "register", 
-                    "verksamhetsomrade"
-                ], 
-                [
-                    "delete_verksamhetsomrade", 
-                    "register", 
-                    "verksamhetsomrade"
-                ]
-            ]
-        }
-    }, 
-    {
-        "pk": 5, 
         "model": "auth.group", 
         "fields": {
             "name": "Bolagsverket", 
@@ -190,12 +140,481 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "mattias", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_staff": true, 
+            "groups": [
+                [
+                    "Bolagsverket"
+                ]
+            ], 
+            "user_permissions": [], 
+            "password": "pbkdf2_sha256$12000$wqvecVroRCr1$zKbSSB8tkg/f5mmjJp/ZjKFYVbGVJWFkyCll5aHgK2s=", 
+            "date_joined": "2014-02-07T13:38:58Z", 
+            "first_name": "", 
+            "is_superuser": false, 
+            "last_login": "2014-02-07T13:38:58Z", 
+            "email": ""
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Uppgiftsl\u00e4mnarutredningen", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "admin", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_staff": true, 
+            "groups": [
+                [
+                    "Uppgiftsl\u00e4mnarutredningen"
+                ]
+            ], 
+            "user_permissions": [], 
+            "password": "pbkdf2_sha256$12000$40bMWwT9Hbff$He3y7URNLq18y/QtMoo3NaSYNxaXuRsd03p65zRtr0I=", 
+            "date_joined": "2014-02-07T13:38:58Z", 
+            "first_name": "", 
+            "is_superuser": true, 
+            "last_login": "2014-02-07T13:38:58Z", 
+            "email": ""
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "staffan", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_staff": true, 
+            "groups": [
+                [
+                    "Uppgiftsl\u00e4mnarutredningen"
+                ]
+            ], 
+            "user_permissions": [], 
+            "password": "pbkdf2_sha256$12000$JOZqFN7LYfzf$ANjVrL338Omkl0RT/VhR9F2/SX3WSl1zjXvOtmALnKc=", 
+            "date_joined": "2014-02-07T13:38:58Z", 
+            "first_name": "", 
+            "is_superuser": true, 
+            "last_login": "2014-02-07T13:38:58Z", 
+            "email": ""
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "janne", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_staff": true, 
+            "groups": [
+                [
+                    "Uppgiftsl\u00e4mnarutredningen"
+                ]
+            ], 
+            "user_permissions": [], 
+            "password": "pbkdf2_sha256$12000$Nou0jsrzi9xx$8IJPrUx9437q8Vf988DiE5ItTqedcEsSqiTyd4nZHT4=", 
+            "date_joined": "2014-02-07T13:38:58Z", 
+            "first_name": "", 
+            "is_superuser": true, 
+            "last_login": "2014-02-07T13:38:58Z", 
+            "email": ""
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "F\u00f6rs\u00e4kringskassan", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Kronofogdemyndigheten", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
         "pk": 6, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Arbetsf\u00f6rmedlingen", 
+            "permissions": [
+                [
+                    "add_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "change_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "delete_krav", 
+                    "register", 
+                    "krav"
+                ], 
+                [
+                    "add_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "change_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "delete_verksamhetsomrade", 
+                    "register", 
+                    "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ]
+            ]
+        }
+    }, 
+    {
+        "pk": 7, 
         "model": "auth.group", 
         "fields": {
             "name": "Bokf\u00f6ringsn\u00e4mnden", 
@@ -229,12 +648,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 7, 
+        "pk": 8, 
         "model": "auth.group", 
         "fields": {
             "name": "Patentombudsn\u00e4mnden", 
@@ -268,12 +732,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 8, 
+        "pk": 9, 
         "model": "auth.group", 
         "fields": {
             "name": "Livsmedelsverket", 
@@ -307,12 +816,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 9, 
+        "pk": 10, 
         "model": "auth.group", 
         "fields": {
             "name": "SCB", 
@@ -346,12 +900,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 10, 
+        "pk": 11, 
         "model": "auth.group", 
         "fields": {
             "name": "Medlingsinstitutet", 
@@ -385,12 +984,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 11, 
+        "pk": 12, 
         "model": "auth.group", 
         "fields": {
             "name": "Statens energimyndighet", 
@@ -424,12 +1068,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 12, 
+        "pk": 13, 
         "model": "auth.group", 
         "fields": {
             "name": "Tillv\u00e4xtanalys", 
@@ -463,12 +1152,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 13, 
+        "pk": 14, 
         "model": "auth.group", 
         "fields": {
             "name": "Finansinspektionen", 
@@ -502,12 +1236,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 14, 
+        "pk": 15, 
         "model": "auth.group", 
         "fields": {
             "name": "Naturv\u00e5rdsverket", 
@@ -541,12 +1320,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 15, 
+        "pk": 16, 
         "model": "auth.group", 
         "fields": {
             "name": "Skolverket", 
@@ -580,12 +1404,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 16, 
+        "pk": 17, 
         "model": "auth.group", 
         "fields": {
             "name": "Skogsstyrelsen", 
@@ -619,12 +1488,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 17, 
+        "pk": 18, 
         "model": "auth.group", 
         "fields": {
             "name": "Tillv\u00e4xtverket", 
@@ -658,12 +1572,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 18, 
+        "pk": 19, 
         "model": "auth.group", 
         "fields": {
             "name": "Trafikanalys", 
@@ -697,12 +1656,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 19, 
+        "pk": 20, 
         "model": "auth.group", 
         "fields": {
             "name": "Trafikverket", 
@@ -736,12 +1740,57 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
     }, 
     {
-        "pk": 20, 
+        "pk": 21, 
         "model": "auth.group", 
         "fields": {
             "name": "Tullverket", 
@@ -775,45 +1824,51 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
-                ]
-            ]
-        }
-    }, 
-    {
-        "pk": 21, 
-        "model": "auth.group", 
-        "fields": {
-            "name": "Skatteverket", 
-            "permissions": [
-                [
-                    "add_krav", 
-                    "register", 
-                    "krav"
                 ], 
                 [
-                    "change_krav", 
+                    "add_kravomrade", 
                     "register", 
-                    "krav"
+                    "kravomrade"
                 ], 
                 [
-                    "delete_krav", 
+                    "change_kravomrade", 
                     "register", 
-                    "krav"
+                    "kravomrade"
                 ], 
                 [
-                    "add_verksamhetsomrade", 
+                    "delete_kravomrade", 
                     "register", 
-                    "verksamhetsomrade"
+                    "kravomrade"
                 ], 
                 [
-                    "change_verksamhetsomrade", 
+                    "add_blanketturl", 
                     "register", 
-                    "verksamhetsomrade"
+                    "blanketturl"
                 ], 
                 [
-                    "delete_verksamhetsomrade", 
+                    "change_blanketturl", 
                     "register", 
-                    "verksamhetsomrade"
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
@@ -853,6 +1908,51 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }
@@ -892,6 +1992,51 @@
                     "delete_verksamhetsomrade", 
                     "register", 
                     "verksamhetsomrade"
+                ], 
+                [
+                    "add_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "change_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "delete_kravomrade", 
+                    "register", 
+                    "kravomrade"
+                ], 
+                [
+                    "add_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "change_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "delete_blanketturl", 
+                    "register", 
+                    "blanketturl"
+                ], 
+                [
+                    "add_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "change_etjansturl", 
+                    "register", 
+                    "etjansturl"
+                ], 
+                [
+                    "delete_etjansturl", 
+                    "register", 
+                    "etjansturl"
                 ]
             ]
         }

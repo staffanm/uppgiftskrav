@@ -19,7 +19,6 @@ Något i stil med detta::
     # grundladda användargrupper/myndigheter
     python ./manage.py migrate auth
     python ./manage.py loaddata register/fixtures/groups.json
-    python ./manage.py createsuperuser
     # sätt upp datastruktur och grundladda data för själva appen
     python ./manage.py makemigrations register
     python ./manage.py migrate
@@ -42,7 +41,6 @@ Om databasen måste resettas och grundladdas::
     heroku run python manage.py migrate auth
     heroku run python ./manage.py migrate auth
     heroku run python ./manage.py loaddata register/fixtures/groups.json
-    heroku run python ./manage.py createsuperuser
     heroku run python ./manage.py makemigrations register
     heroku run python ./manage.py migrate
     heroku run python ./manage.py loaddata register/fixtures/initial_data.json

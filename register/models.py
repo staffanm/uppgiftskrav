@@ -56,6 +56,33 @@ class Verksamhetsomrade(models.Model):
         verbose_name = "Verksamhetsområde"
         verbose_name_plural = "Verksamhetsområden"
 
+
+class KravomradeManager(models.Manager):
+    def get_by_natural_key(self, omrade):
+        return self.get(omrade=omrade)
+
+class Kravomrade(models.Model):
+    objects = KravomradeManager()
+    omrade = models.CharField("Kravområde", max_length=100, unique=True)
+    beskrivning = models.TextField("Beskrivning")
+    myndighet = models.ForeignKey(authmodels.Group,
+                                  related_name="kravomrade_for",
+                                  help_text="Myndighet som har definierat kravområdet")
+
+    def __unicode__(self):
+        return self.omrade
+
+    def __iter__(self):
+        for i in self._meta.get_all_field_names():
+            yield (self._meta.get_field(i), getattr(self, i))
+
+    def natural_key(self):
+        return (self.omrade,)
+
+    class Meta:
+        verbose_name = "Kravområde"
+        verbose_name_plural = "Kravområden"
+
 class BranschManager(models.Manager):
     def get_by_natural_key(self, snikod):
         return self.get(snikod=snikod)
@@ -96,7 +123,7 @@ class Foretagsform(models.Model):
 
     def __iter__(self):
         for i in self._meta.get_all_field_names():
-            if hasattr(self,i):
+            if hasattr(self, i):
                 yield (self._meta.get_field(i), getattr(self, i))
 
     def natural_key(self):
@@ -106,6 +133,7 @@ class Foretagsform(models.Model):
         verbose_name = "Företagsform"
         verbose_name_plural = "Företagsformer"
 
+
 class Periodicitet(models.Model):
     beskrivning = models.CharField(max_length=50)
 
@@ -114,6 +142,7 @@ class Periodicitet(models.Model):
 
     class Meta:
         verbose_name_plural = "Periodiciteter"
+
 
 class KravManager(models.Manager):
     def get_by_natural_key(self, kravid):
@@ -167,8 +196,7 @@ class Krav(models.Model):
                     blank=True,
                     null=True,
                     verbose_name="Kravområde",
-                    help_text="Indelning i krav efter områden som är naturliga "
-                              "utifrån en företagares perspektiv")
+                    help_text="Om uppgiftskravet hör till ett redan befintligt och av myndigheten definierat kravområde eller liknande, ange det om det går att återanvända och visa mot kund.")
 
     ansvarig_myndighet = fk(authmodels.Group,
                             related_name="ansvarig_for",
@@ -191,9 +219,9 @@ class Krav(models.Model):
 
     # krav = cf("Krav?", blank=True, max_length=10, help_text="What?")
     
-    namn = cf("Uppgiftskravsnamn",
+    namn = cf("Uppgiftskrav",
               max_length=255,
-              help_text="""Benämning på uppgiftskravet gentemot företaget""")
+              help_text="""Tydlig och enkel benämning på uppgiftskravet så att företaget förstår vad det innebär.""")
 
     forfattning = cf("Författning",
                      max_length=50,
@@ -221,11 +249,11 @@ class Krav(models.Model):
                 uppgiftskravet specificeras.
 
                 För EU-lagstiftning: Använd Celexnummer, artikel,
-                stycke (t ex 31993R2454 221 2).
+                stycke därefter ev bilaga (t ex 31993R2454 221 2).
 
                 För nationell lagstiftning: Använd
-                författningsförkortning författningsnummer, kapitel,
-                paragraf, stycke (t ex SJFS1995:94 15).
+                författningssamlingsförkortning författningsnummer, kapitel,
+                paragraf, stycke därefter ev. bilaga (t ex SJFS1995:94 15).
 
                 Om det inte går att avgöra primärt författningsstöd
                 åtskilj med semikolon (;).""",
@@ -236,7 +264,15 @@ class Krav(models.Model):
     URSPRUNG = [(NATIONELLT, "Nationellt"),
                 (EU, "EU mm")]
     ursprung = intf(choices=URSPRUNG,
-                  help_text="""Vilket ursprung författningen har. Antingen "EU mm" eller "Nationellt".""")
+                    blank=True,
+                    null=True,
+                    help_text='Vilket ursprung författningen har. '
+                              'Antingen "EU mm" eller "Nationellt"')
+
+    omfattas_av_tjdir = bf("Omfattas av tjänstedirektivet",
+                           default=False,
+                           help_text="Detta uppgiftskrav omfattas av EU:s tjänstedirektiv (2006/123/EG)")
+
 
     beskrivning = tf(editable=False,
                      blank=True,
@@ -248,22 +284,24 @@ class Krav(models.Model):
 
     anteckning = tf(editable=False,
                     blank=True,
-                    help_text="""Anteckning om uppgiftskravet. 
+                    help_text="""Anteckning om uppgiftskravet.
 
                     Ska inte ändras.""")
 
     kortbeskrivning = tf("Kort beskrivning av uppgiftskravet",
                          max_length=300,
-                         help_text="""Beskriv kortfattat vad uppgiftskravet avser så att
-                         näringsidkare/företag förstår vad som ska
+                         help_text="""Beskriv kortfattat vad uppgiftskravet
+                         avser så att företag förstår vad som ska
                          göras och om det berör dem. Max 300 tecken
                          inkl mellanslag.""")
     lank_till_info = url("Länk till information om uppgiftskravet",
                          max_length=1000,  # myndigheters URL:ar...
                          blank=True,
                          null=True,
-                         help_text="Företaget får läsa mer om uppgiftskravet"
-                         " på myndighetens webbplats")
+                         help_text="Ange länk till ställe på myndighetens "
+                                   "webbplats där information om "
+                                   "uppgiftskravet framgår och där företaget "
+                                   "kan läsa mer om uppgiftskravet.")
     YESNO = [(JA, 'Ja'),
              (NEJ, 'Nej')]
     leder_till_insamling = intf("Leder till insamling från företag",
@@ -273,17 +311,15 @@ class Krav(models.Model):
     galler_from = datef("Gäller från och med",
                         null=True,
                         blank=True,
-                        help_text="""Ange datom då upppgiftskravet börja gälla om det inte gäller nu men senare under året.""")
-    galler_tom = datef("Gälller till och med",
+                        help_text="Ange datum då upppgiftskravet börja gälla "
+                                  "om det inte gäller nu men senare.")
+    galler_tom = datef("Gäller till och med",
                        null=True,
                        blank=True,
-                       help_text="""Ange datom då upppgiftskravet upphör att gälla om det är känt.""")
+                       help_text="""Ange datum då upppgiftskravet upphör att gälla om det är känt.""")
 
     egna_noteringar = tf(blank=True,
-                         help_text="""Ange egna noteringar i denna cell vid behov.
-    
-                         Noteringar från kartläggningens kolumn
-                         Upphört? ligger i denna kolumn.""")
+                         help_text="""Ange egna noteringar i denna cell vid behov.""")
 
     kalenderstyrt = intf(help_text="""Ange om uppgiften lämnas in utifrån förutbestämd tidpunkt.""",
                          choices=YESNO)
@@ -325,6 +361,8 @@ class Krav(models.Model):
 #                                 (ARSVIS, 'Årsvis (ej särskilt datum)'),
 #                             ],
     periodicitet = m2m(Periodicitet,
+                       null=True,
+                       blank=True,
                        help_text="""Ange vid vilken tidpunkt som uppgiften lämnas in om du svarat Ja
                        under Kalenderstyrt. Om du svarat Nej under
                        Kalenderstyrt är "Inte relevant" ifyllt.
@@ -334,27 +372,19 @@ class Krav(models.Model):
                        Välj ett av värdena i listan. Vid t ex årlig uppgift, ange när på året.""")
 
     handelsestyrt = intf("Händelsestyrt",
-                        help_text="""Ange om uppgiften lämnas in utifrån händelse.""",
-                        choices=YESNO)
+                         blank=True,
+                         null=True,
+                         help_text="""Ange om uppgiften lämnas in utifrån händelse.""",
+                         choices=YESNO)
 
 
     MYNDIGHETSINITIERAT=1
     FORETAGSINITIERAT=2
-    BADA=3
     INITIERANDE = [(MYNDIGHETSINITIERAT, "Myndighetsinitierat"),
-                        (FORETAGSINITIERAT, "Företagsinitierat"),
-                        (BADA, "Båda")]
+                   (FORETAGSINITIERAT, "Företagsinitierat")]
     initierande_part = intf(choices=INITIERANDE,
-                            help_text="""Ange om myndigheten, företaget eller båda initierar
-                          uppgiftskravet första gången.
-
-                          Myndighetsinitierat - om myndigheten vet om
-                          att företaget måste göra något. Exempel:
-                          Skyldighet att lämna årsredovisning.
-
-                          Företagsinitierat - om myndigheten inte vet om
-                          vad företaget ska göra. Exempel: Anmälan till
-                            potatisregistret.""")
+                            help_text="""Ange om myndigheten eller företaget 
+                          initierar uppgiftskravet första gången.""")
 
     ovrigt_nar = tf("Övrigt (När)",
                     blank=True,
@@ -364,6 +394,8 @@ class Krav(models.Model):
     beror_bransch = intf("Berör specifik bransch",
                          choices=YESNO)
     bransch = m2m(Bransch,
+                  null=True,
+                  blank=True,
                   help_text="""Om uppgiftskravet endast berör specifik bransch, ange den/dessa på
                   den översta nivån av SNI2007.""",
                   validators=[not_empty_list])
@@ -383,13 +415,15 @@ class Krav(models.Model):
     beror_foretagsform = intf("Berör specifika företagsformer",
                               choices=YESNO)
     foretagsform = m2m(Foretagsform,
+                       null=True,
+                       blank=True,
                        help_text="""Om uppgiftskravet endast berör specifika företagsformer, ange
                        dessa.""",
                        validators=[not_empty_list])
 
     storlek = intf(blank=True,
-                  help_text="""Ange om uppgiftskravet endast berör företag eller produktion av
-                  viss storlek.""",
+                   null=True,
+                   help_text="""Ange om uppgiftskravet endast berör företag eller produktion av viss storlek.""",
                    choices=YESNO)
 
 
@@ -423,18 +457,20 @@ class Krav(models.Model):
                          validators=[not_null_integer])
 
     annan_ingivare = intf(help_text="""Ange om uppgifter som rör uppgiftskravet kan lämnas av ombud för
-                         näringsidkaren/företaget (alltså någon som
+                         företaget (alltså någon som
                          har fullmakt och inte är anställd).""",
                           choices=YESNO)
     
 
-    underskrift = intf(help_text="Kräver uppgiftsinlämningen underskrift (på papper eller elektroniskt)?",
+    underskrift = intf(null=True,
+                       blank=True,
+                       help_text="Kräver uppgiftsinlämningen underskrift (på papper eller elektroniskt)?",
                        choices=YESNO)
 
     etjanst = intf("E-tjänst",
                    help_text="""Har ni en e-tjänst som kan användas för insamling av uppgiftskravet
                   (dvs tjänst som möjliggör automatiserad behandling
-                  av uppgifterna)?  Här inte t ex
+                  av uppgifterna)?  Här avses inte t ex
                   pdf-blankett som måste skrivas ut.""",
                    choices=YESNO)
 
@@ -456,12 +492,14 @@ class Krav(models.Model):
     BLANKETT_TILLGANGLIG = 3
     SMART_BLANKETT_TILLGANGLIG = 4
     svarighet_ej_etjanst = intf("Uppskattad svårighet att lämna uppgiftskravet - ej e-tjänst",
-                             choices=((ENDAST_ETJANST, "Uppgiftskravet kan endast fullgöras med e-tjänst"),
-                                      (INGEN_INFO_TILLGANGLIG, "Ingen information om uppgiftskravet tillgänglig på myndighetens webbplats/er."),
-                                      (INFO_TILLGANGLIG, "Information om uppgiftskravet tillgänglig på myndighetens webbplats/er."),
-                                      (BLANKETT_TILLGANGLIG, "Blankett tillgänglig."),
-                                      (SMART_BLANKETT_TILLGANGLIG, "Interaktiv/smart blankett tillgänglig.")),
-                             help_text="""0 Uppgiftskravet kan endast fullgöras
+                                null=True,
+                                blank=True,
+                                choices=((ENDAST_ETJANST, "Uppgiftskravet kan endast fullgöras med e-tjänst"),
+                                         (INGEN_INFO_TILLGANGLIG, "Ingen information om uppgiftskravet tillgänglig på myndighetens webbplats/er."),
+                                         (INFO_TILLGANGLIG, "Information om uppgiftskravet tillgänglig på myndighetens webbplats/er."),
+                                         (BLANKETT_TILLGANGLIG, "Blankett tillgänglig."),
+                                         (SMART_BLANKETT_TILLGANGLIG, "Interaktiv/smart blankett tillgänglig.")),
+                                help_text="""0 Uppgiftskravet kan endast fullgöras
                              med e-tjänst.
                                   
                              1 Ingen information om uppgiftskravet
@@ -481,20 +519,23 @@ class Krav(models.Model):
                              Företaget kan ladda ner interaktiv
                              (offline) blankett och lämna in med
                              brevpost, fax, e-post.""")
-    lank_till_blankett = url("Länk till blankett",
-                             max_length=1000,
-                             blank=True,
-                             null=True,
-                             help_text="""Ange länk direkt till blankett i det fall det finns, annars lämna tomt.""")
+    
+#    lank_till_blankett = url("Länk till blankett",
+#                             max_length=1000,
+#                             blank=True,
+#                             null=True,
+#                             help_text="""Ange länk direkt till blankett i det fall det finns, annars lämna tomt.""")
 
     ETJANST = 5
     MASKIN_TILL_MASKIN = 6
     EJ_ETJANST = 7
     svarighet_etjanst = intf("Uppskattad svårighet att lämna uppgiftskravet - e-tjänst",
-                          choices=((ETJANST,"E-tjänst"),
-                                   (MASKIN_TILL_MASKIN, "Maskin-till-maskin"),
-                                   (EJ_ETJANST, "Ej e-tjänst")),
-                          help_text="""5 E-tjänst
+                             null=True,
+                             blank=True,
+                             choices=((ETJANST,"E-tjänst"),
+                                      (MASKIN_TILL_MASKIN, "Maskin-till-maskin"),
+                                      (EJ_ETJANST, "Ej e-tjänst")),
+                             help_text="""5 E-tjänst
                           Företaget kan interaktivt navigera, vägledas, ange uppgifter
                           och lämna in online med kvittens. 
 
@@ -506,10 +547,10 @@ class Krav(models.Model):
                           
                           Välj ett av värdena i listan""")
 
-    lank_till_etjanst = url("Länk till e-tjänst",
-                            blank=True,
-                            null=True,
-                            help_text="Ange länk till e-tjänsti det fall det finns, annars lämna tomt.")
+#    lank_till_etjanst = url("Länk till e-tjänst",
+#                            blank=True,
+#                            null=True,
+#                            help_text="Ange länk till e-tjänst i det fall det finns, annars lämna tomt.")
 
     volymer_tidigare = intf("Volymer tidigare genomförd kartläggning",
                             blank=True,
@@ -545,7 +586,7 @@ class Krav(models.Model):
                   help_text="""Är uppgiftskravet aktuellt, gällande och fullständigt (inte under redigering)?""")
     uppgifter = models.ManyToManyField(Uppgift, blank=True, validators=[not_empty_list])
 
-    avgransad = bf("Avgränsat", default=False, help_text="Är uppgiftskravet av så liten praktisk betydelse att det inte ska omfattas av kartläggningen fram till 2015?")
+    avgransad = bf("Avgränsat", default=False, help_text="Avgränsat enligt villkor i anvisningarnas stycke om avgränsning.")
                    
 
     def __unicode__(self):
@@ -582,3 +623,20 @@ class Krav(models.Model):
         verbose_name_plural = "Krav"
         ordering = ["id"]
     
+
+# these two models shoud not have managers, or any entries in admin or
+# similar -- they're just a way to have Krav.lank_till_blankett and
+# Krav.lank_till_etjanst supporting multiple URLs
+class BlankettURL(models.Model):
+    url = models.URLField()
+    krav = models.ForeignKey(Krav)
+    class Meta():
+        verbose_name = "Blankettlänk"
+        verbose_name_plural = "Blankettlänkar"
+
+class EtjanstURL(models.Model):
+    url = models.URLField()
+    krav = models.ForeignKey(Krav)
+    class Meta():
+        verbose_name = "Etjänstlänk"
+        verbose_name_plural = "Etjänstlänkar"
