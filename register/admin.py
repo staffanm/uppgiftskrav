@@ -157,9 +157,9 @@ class KravAdmin(admin.ModelAdmin):
         return qs.filter(kartlaggande_myndighet__in=request.user.groups.all())
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "verksamhetsomrade":
+        if db_field.name == "verksamhetsomrade" and not request.user.is_superuser:
             kwargs["queryset"] = Verksamhetsomrade.objects.filter(myndighet__in=request.user.groups.all())
-        elif db_field.name == "kravomrade":
+        elif db_field.name == "kravomrade" and not request.user.is_superuser:
             kwargs["queryset"] = Kravomrade.objects.filter(myndighet__in=request.user.groups.all())
         return super(KravAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)        
     
