@@ -33,7 +33,7 @@ Deploy till Heroku
 
  Liknande kommandon::
 
-    git push master heroku
+    git push heroku master
 
 Om databasen måste resettas och grundladdas::
    
