@@ -67,9 +67,9 @@ class SearchForm(forms.Form):
     kravid = forms.CharField(required=False, max_length=Krav._meta.get_field_by_name('kravid')[0].max_length)
     namn = forms.CharField(required=False, max_length=Krav._meta.get_field_by_name('namn')[0].max_length)
     initierande_part = forms.ChoiceField(choices=ANY + Krav.INITIERANDE)
-    etjanst = forms.ChoiceField(choices=ANY+Krav.YESNO)
+    etjanst = forms.ChoiceField(choices=ANY+Krav.JANEJ)
     ursprung = forms.ChoiceField(choices= ANY + Krav.URSPRUNG)
-    leder_till_insamling = forms.ChoiceField(choices= ANY + Krav.YESNO, initial=Krav.JA)
+    leder_till_insamling = forms.ChoiceField(choices= ANY + Krav.JANEJ, initial=Krav.JA)
     avgransat = forms.BooleanField()
     
     

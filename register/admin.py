@@ -75,17 +75,21 @@ admin_site.register(Foretagsform, ForetagsformAdmin)
 
 class BlankettInline(admin.TabularInline):
     model = BlankettURL
-    extra = 3
+    extra = 1
 
 
 class EtjanstInline(admin.TabularInline):
     model = EtjanstURL
-    extra = 3
+    extra = 1
 
 
 class KravAdmin(admin.ModelAdmin):
+
+    class Media:
+        js = ['/static/js/myactions.js']
+        
     list_display = ['kravid', 'namn', 'initierande_part', 'avgransad', 'valid']
-    # list_editable = ['namn', 'initierande_part', 'avgransad']
+    # list_editable = ['namn', 'initierande_part', 'avgransad', 'bransch']
     list_filter = ['avgransad', 'kartlaggande_myndighet', 'initierande_part',
                    'etjanst']
 
@@ -103,7 +107,7 @@ class KravAdmin(admin.ModelAdmin):
 
     fieldsets = [
         ('Uppgiftskrav', {'fields': [
-            'kravid',
+            # 'kravid',
             'namn',
             'verksamhetsomrade',
             'kravomrade',
@@ -132,7 +136,7 @@ class KravAdmin(admin.ModelAdmin):
         ]}),
         ('Hur fullgörs uppgiftskravet?', {'fields': [
             'annan_ingivare',
-            'blankett',                                                     
+            'blankett',
             'etjanst',
             'maskintillmaskin',
             'ovrigt_hur']}),

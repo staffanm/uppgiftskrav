@@ -206,7 +206,7 @@
             "password": "pbkdf2_sha256$12000$wqvecVroRCr1$zKbSSB8tkg/f5mmjJp/ZjKFYVbGVJWFkyCll5aHgK2s=", 
             "date_joined": "2014-02-07T13:38:58Z", 
             "first_name": "", 
-            "is_superuser": false, 
+            "is_superuser": true, 
             "last_login": "2014-02-07T13:38:58Z", 
             "email": ""
         }
