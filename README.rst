@@ -45,3 +45,11 @@ Om databasen måste resettas och grundladdas::
     heroku run python ./manage.py migrate
     heroku run python ./manage.py loaddata register/fixtures/initial_data.json
     
+Export
+------
+
+För att exportera allt i själva appen (utelämna "register" om även
+grupp- och användarinfo ska med) i djangos JSON-modell till filen
+out.json, använd::
+
+    heroku run "python ./manage.py dumpdata register --indent 4" --app uppgiftskravsregister | tail -n +2 > out.json
