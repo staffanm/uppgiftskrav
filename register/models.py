@@ -372,9 +372,7 @@ class Krav(models.Model):
     periodicitet = m2m(Periodicitet,
                        null=True,
                        blank=True,
-                       help_text="""Ange vid vilken tidpunkt som uppgiften lämnas in om du svarat Ja
-                       under Kalenderstyrt. Om du svarat Nej under
-                       Kalenderstyrt är "Inte relevant" ifyllt.
+                       help_text="""Ange vid vilken tidpunkt som uppgiften lämnas in.
 
                        Ange vanligast förekommande om det finns variationer i tidpunkter.
 
