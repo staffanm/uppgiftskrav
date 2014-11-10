@@ -107,7 +107,7 @@ class KravAdmin(admin.ModelAdmin):
 
     fieldsets = [
         ('Uppgiftskrav', {'fields': [
-            # 'kravid',
+            # 'kravid', -- should not be editable, ideally autoassigned
             'namn',
             'verksamhetsomrade',
             'kravomrade',
@@ -119,8 +119,9 @@ class KravAdmin(admin.ModelAdmin):
             'leder_till_insamling',
             'galler_from',
             'galler_tom',
-            'avgransad',
-            'omfattas_av_tjdir',
+            # 'avgransad',
+            # 'omfattas_av_tjdir',
+            # the above shouldn't be editable 
         ]}),
         ('När aktualiseras uppgiftskravet?', {'fields': [
             'kalenderstyrt',
