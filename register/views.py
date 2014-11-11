@@ -71,9 +71,8 @@ class SearchForm(forms.Form):
     etjanst = forms.ChoiceField(choices=ANY+Krav.JANEJ)
     ursprung = forms.ChoiceField(choices= ANY + Krav.URSPRUNG)
     leder_till_insamling = forms.ChoiceField(choices= ANY + Krav.JANEJ, initial=Krav.JA)
-    avgransat = forms.BooleanField()
-    
-    
+    avgransat = forms.NullBooleanField()
+
 def search(request):
     if request.method == "POST":
         results =  Krav.objects.all()
