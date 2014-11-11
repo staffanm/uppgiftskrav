@@ -19,23 +19,29 @@ from register.models import (Uppgift, Verksamhetsomrade, Bransch,
 # admin.site.register(Uppgift, UppgiftAdmin)
 
 
-# this new django 1.7 feature removes the need for overriding most
-# admin templates
-class MyAdminSite(AdminSite):
-    site_header = 'Uppgiftskravsregistret'
-    site_title = 'Uppgiftskravsregistrets administrationsverktyg'
-    index_title = 'Administrera krav mm.'
+# # this new django 1.7 feature removes the need for overriding most
+# # admin templates
+# 
+# 
+# class MyAdminSite(AdminSite):
+#     site_header = 'Uppgiftskravsregistret'
+#     site_title = 'Uppgiftskravsregistrets administrationsverktyg'
+#     index_title = 'Administrera krav mm.'
+# 
+# admin_site = MyAdminSite(name='myadmin')
+# 
+# # this re-enables editing of user and groups under a common
+# # header. Unfortunately that is not translated (says "Authentication
+# # and authorization")
+# 
+# # ALSO: This totally messes up the new user form and does not properly
+# # save passwords.
+# 
+# admin_site.register(User)
+# admin_site.register(Group)
 
-
-
-admin_site = MyAdminSite(name='myadmin')
-
-# this re-enables editing of user and groups under a common
-# header. Unfortunately that is not translated (says "Authentication
-# and authorization")
-admin_site.register(User)
-admin_site.register(Group)
-
+admin_site = admin.site
+ 
 class VerksamhetsomradeAdmin(admin.ModelAdmin):
     # only show those kravs that the user may edit (based upon the
     # group/myndighet the krav belongs to, and the group the user
