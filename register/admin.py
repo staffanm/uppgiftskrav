@@ -26,6 +26,8 @@ class MyAdminSite(AdminSite):
     site_title = 'Uppgiftskravsregistrets administrationsverktyg'
     index_title = 'Administrera krav mm.'
 
+
+
 admin_site = MyAdminSite(name='myadmin')
 
 # this re-enables editing of user and groups under a common
