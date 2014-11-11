@@ -190,8 +190,8 @@ class KravAdmin(admin.ModelAdmin):
             # 5. assign next available
             obj.kravid = "%s%s" % (abbrev, maxid + 1)
 
-            # 6. done!
-            obj.save()
+        # 6. done!
+        obj.save()
             
     # only show those kravs that the user may edit (based upon the
     # group/myndighet the krav belongs to, and the group the user
