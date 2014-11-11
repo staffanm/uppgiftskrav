@@ -626,7 +626,6 @@ class Krav(models.Model):
             except FieldDoesNotExist:
                 pass
 
-
     def natural_key(self):
         return (self.kravid,)
 

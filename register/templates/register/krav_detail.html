@@ -1,5 +1,49 @@
-{% extends "register/detail_generic.html" %}
+{% extends "register/base_generic.html" %}
 
+{% block title %} {{object}}
+{% if adminurl %}
+<a href="{{ adminurl }}" class="btn btn-primary active">Redigera detta</a>
+{% endif %}
+{% endblock %}
+
+{% load register_extras %}
+{% block content %}
+{% if validation_errors %}
+    <div class="alert alert-danger">
+      Det finns problem med informationen om uppgiftskravet -- se de rödmarkerade raderna nedan!
+    </div>
+{% endif %}
+
+
+<table class="table table-condensed table-hover">
+  <thead>
+    <tr>
+      <th>Fält</th> <th>Värde</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for fieldset in fieldsets %}
+    <tr><td colspan="2"><h2>{{fieldset.0}}</h2></td></tr>
+    {% for fieldname in fieldset.1.fields %}
+    <tr>
+      <td>
+	<strong title="{{field.name}}">{{ object|verbose_name:fieldname }}</strong><br>
+	<small>{{ object|help_text:fieldname }}</small>
+      </td>
+      <td>{{ object|get_value:fieldname }}</td>
+      <td>
+      {% if validation_errors|getitem:fieldname %}
+	<p class="alert alert-danger">
+	{{validation_errors|getitem:fieldname|first}}
+	</p>
+      {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
 
 {% block leftgrid %}
 <h2>Uppgifter</h2>

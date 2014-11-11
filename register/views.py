@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DetailView
 
 from register.models import Uppgift, Krav, Verksamhetsomrade, Bransch, Foretagsform
+from register.admin import admin_site
 
 def _get_plot():
     # returns a subplot connected to a figure connected to a canvas
@@ -75,7 +76,6 @@ class SearchForm(forms.Form):
     
 def search(request):
     if request.method == "POST":
-        # from pudb import set_trace; set_trace()
         results =  Krav.objects.all()
         kartlaggande_myndighet = request.POST.get('kartlaggande_myndighet', None)
         if kartlaggande_myndighet != '-1':
@@ -142,6 +142,9 @@ class KravDetail(MyDetailView):
         if self.request.user.is_superuser or self.object.kartlaggande_myndighet in self.request.user.groups.all():
             context['adminurl'] = urlresolvers.reverse('admin:register_krav_change', args=(self.object.id,))
 
+        # get modeladmin in order to access fieldsets
+        # FIXME: uses undocumented/private ._registry structure
+        context['fieldsets'] = admin_site._registry[Krav].fieldsets
         return context
 
 class UppgiftList(MyListView):

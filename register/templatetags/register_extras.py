@@ -9,6 +9,20 @@ def getitem(dictionary, key):
         return dictionary.get(key)
 
 @register.filter
+def verbose_name(obj, key):
+    return obj._meta.get_field_by_name(key)[0].verbose_name
+
+@register.filter
+def help_text(obj, key):
+    return obj._meta.get_field_by_name(key)[0].help_text
+
+@register.filter
+def get_value(obj, key):
+    return swedify(getattr(obj, key),
+                   obj._meta.get_field_by_name(key)[0])
+
+
+@register.filter
 def swedify(val, field):
     if isinstance(val, bool):
         return "Ja" if val else "Nej"
