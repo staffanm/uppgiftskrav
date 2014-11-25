@@ -96,7 +96,7 @@ class KravAdmin(admin.ModelAdmin):
     class Media:
         js = ['/static/js/myactions.js']
         
-    list_display = ['kravid', 'namn', 'kravomrade', 'initierande_part', 'avgransad', 'valid']
+    list_display = ['kravid', 'namn', 'verksamhetsomrade', 'initierande_part', 'avgransad', 'valid']
     # list_editable = ['namn', 'initierande_part', 'avgransad', 'bransch']
     list_filter = ['avgransad', 'kartlaggande_myndighet', 'initierande_part',
                    'etjanst']
