@@ -636,11 +636,60 @@ class Krav(models.Model):
     def valid(self):
         try:
             self.full_clean()
+            self._basic_validation()
             return True
         except ValidationError:
             return False
     valid.boolean = True
     valid.short_description = "Fullständigt"
+
+
+    def _basic_validation(self, errors=None):
+        if not errors:
+            errors = {}
+        if not self.namn:
+            errors['namn'] = ['Benämning på uppgiftskravet måste anges']
+        if not self.ansvarig_myndighet:
+            errors['ansvarig_myndighet'] = ['Ansvarig myndighet måste anges']
+        if not self.kartlaggande_myndighet:
+            errors['kartlaggande_myndighet'] = ['Kartläggande myndighet måste anges']
+        if not self.lagrum:
+            errors['lagrum'] = ['Författningsstöd måste anges']
+        if not self.kortbeskrivning:
+            errors['kortbeskrivning'] = ['Kort beskrivning av uppgiftskravet måste anges']
+        if self.leder_till_insamling is None:
+            errors['leder_till_insamling'] = ['Inte angivet om kravet leder till insamling från företag']
+        if self.kalenderstyrt is None:
+            errors['kalenderstyrt'] = ['Inte angivet om kravet är kalenderstyrt eller inte']
+        if self.kalenderstyrt == Krav.JA and not self.periodicitet.count():
+            errors['periodicitet'] = ['Ingen tidpunkt för inlämnande angivet även fast kravet är kalenderstyrt']
+        if not self.initierande_part:
+            errors['initierande_part'] = ['Initierande part ej angiven']
+        if self.beror_bransch is None:
+            errors['beror_bransch'] = ['Inte angivet om kravet berör någon specifik bransch']
+        if self.beror_bransch == Krav.JA and not self.bransch.count():
+            errors['bransch'] = ['Inga branscher angivna även fast kravet beror på detta']
+        if self.arbetsgivare is None:
+            errors['arbetsgivare'] = ['Inte angivet om kravet endast berör arbetsgivare']
+        if self.beror_foretagsform is None:
+            errors['beror_foretagsform'] = ['Inte angivet om kravet beror någon specifik företagsform']
+        if self.beror_foretagsform == Krav.JA and not self.foretagsform.count():
+            errors['foretagsform'] = ['Inga företagsformer angivna även fast kravet beror på detta']
+        if self.annan_ingivare is None:
+            errors['annan_ingivare'] = ['Inte angivet om uppgifter kan lämnas av ombud för företaget']
+        if self.blankett is None:
+            errors['blankett'] = ['Inte angivet om elektronisk blankett finns']
+        if self.blankett == Krav.JA and not self.blanketturl_set.count():
+            errors['blankett'] = ['Elektronisk blankett finns, men ingen länk till sådan är angiven']
+        if self.etjanst is None:
+            errors['etjanst'] = ['Inte angivet om etjänst finns']
+        if self.etjanst == Krav.JA and not self.etjansturl_set.count():
+            errors['etjanst'] = ['Etjänst finns, men ingen länk till sådan är angiven']
+        if self.maskintillmaskin is None:
+            errors['maskintillmaskin'] = ['Inte angivet om maskin-till-maskingränssnitt finns']
+        
+        if errors:
+            raise ValidationError(errors)
 
     class Meta():
         verbose_name_plural = "Krav"

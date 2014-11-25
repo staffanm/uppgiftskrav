@@ -91,6 +91,23 @@ class EtjanstInline(admin.TabularInline):
     extra = 1
 
 
+class VerksamhetsomradeFilter(admin.SimpleListFilter):
+    title = "Verksamhetsområde"
+    parameter_name = "verksamhetsomrade"
+
+    def lookups(self, request, model_admin):
+        if request.user.is_superuser:
+            qs = Verksamhetsomrade.objects.all()
+        else:
+            qs = Verksamhetsomrade.objects.filter(myndighet__in=request.user.groups.all())
+        return ((x.id, x.omrade) for x in qs)
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(verksamhetsomrade=self.value())
+        else:
+            return queryset
+
 class KravAdmin(admin.ModelAdmin):
 
     class Media:
@@ -98,8 +115,8 @@ class KravAdmin(admin.ModelAdmin):
         
     list_display = ['kravid', 'namn', 'verksamhetsomrade', 'initierande_part', 'avgransad', 'valid']
     # list_editable = ['namn', 'initierande_part', 'avgransad', 'bransch']
-    list_filter = ['avgransad', 'kartlaggande_myndighet', 'initierande_part',
-                   'etjanst']
+    # list_filter = ['avgransad', 'kartlaggande_myndighet', 'initierande_part', 'etjanst']
+    list_filter = (VerksamhetsomradeFilter,)
 
     formfield_overrides = {
         models.ManyToManyField: {'widget': CheckboxSelectMultiple()},

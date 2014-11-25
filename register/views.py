@@ -138,6 +138,12 @@ class KravDetail(MyDetailView):
         except ValidationError as e:
             context['validation_errors'] = e.message_dict
 
+        try:
+            self.object._basic_validation(context['validation_errors'])
+        except ValidationError as e:
+            # actually should merge lists of individual keys
+            context['validation_errors'].update(e.message_dict)
+
         if self.request.user.is_superuser or self.object.kartlaggande_myndighet in self.request.user.groups.all():
             context['adminurl'] = urlresolvers.reverse('admin:register_krav_change', args=(self.object.id,))
 
