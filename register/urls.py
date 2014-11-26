@@ -9,6 +9,9 @@ urlpatterns = patterns('',
                        url(r'^krav/$', views.KravList.as_view(), name="krav-list"),
                        url(r'^krav/(?P<slug>[A-Z]+\d+)$', views.KravDetail.as_view(), name="krav-detail"),
 
+                       url(r'^kravomrade/$', views.KravomradeList.as_view(), name="kravomrade-list"),
+                       url(r'^kravomrade/(?P<pk>\d+)$', views.KravomradeDetail.as_view(), name="kravomrade-detail"),
+
                        url(r'^uppgift/$', views.UppgiftList.as_view(), name="uppgift-list"),
                        url(r'^uppgift/(?P<slug>[A-Z]+\d+)$', views.UppgiftDetail.as_view(), name="uppgift-detail"),
 

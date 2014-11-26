@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DetailView
 
-from register.models import Uppgift, Krav, Verksamhetsomrade, Bransch, Foretagsform
+from register.models import Uppgift, Krav, Verksamhetsomrade, Bransch, Foretagsform, Kravomrade
 from register.admin import admin_site
 
 def _get_plot():
@@ -123,6 +123,15 @@ class MyListView(ListView):
 
 class MyDetailView(DetailView):
     pass
+
+class KravomradeList(MyListView, ):
+    model = Kravomrade
+    queryset = Kravomrade.objects.order_by('omrade')
+
+class KravomradeDetail(MyDetailView):
+    model = Kravomrade
+    # slug_field = "formkod"
+
 
 class KravList(MyListView):
     model = Krav

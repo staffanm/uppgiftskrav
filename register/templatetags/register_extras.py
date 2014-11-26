@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import template
 from django.db import models
+from register.utils import parse_lagrum, format_lagrum, format_link
 register = template.Library()
 
 @register.filter
@@ -18,8 +19,14 @@ def help_text(obj, key):
 
 @register.filter
 def get_value(obj, key):
-    return swedify(getattr(obj, key),
-                   obj._meta.get_field_by_name(key)[0])
+    if key == 'lagrum':
+        parts = parse_lagrum(getattr(obj, key))
+        if parts:
+            link = format_parts(parts)
+            return "<a href='%s'>%s</a>" % getattr(obj, key)
+    else:
+        return swedify(getattr(obj, key),
+                       obj._meta.get_field_by_name(key)[0])
 
 
 @register.filter
