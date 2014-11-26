@@ -17,13 +17,16 @@ def verbose_name(obj, key):
 def help_text(obj, key):
     return obj._meta.get_field_by_name(key)[0].help_text
 
-@register.filter
+@register.filter(is_safe=True)
 def get_value(obj, key):
     if key == 'lagrum':
         parts = parse_lagrum(getattr(obj, key))
         if parts:
-            link = format_parts(parts)
-            return "<a href='%s'>%s</a>" % getattr(obj, key)
+            link = list(format_link(*parts))[0]
+            if link:
+                return "<a href='%s'>%s</a>" % (link, getattr(obj, key))
+            else:
+                return getattr(obj, key)
     else:
         return swedify(getattr(obj, key),
                        obj._meta.get_field_by_name(key)[0])

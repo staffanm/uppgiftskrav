@@ -104,13 +104,15 @@ def format_lagrum(*lagrum):
     return ("3 kap. 3 § lagen (2008:145) om statligt tandvårdsstöd", )
 
 def format_link(*lagrum):
+    ret = []
     for parts in lagrum:
         # eg http://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/-_sfs-1998-204/#P5
         if 'fs' in parts and parts['fs'] == 'SFS':
             frag = "P%s" % parts['par'].replace(" ", "")
             if 'kap' in parts:
                 frag = ("K%s" % (parts['kap'].replace(" ", ""))) + frag
-            yield ("http://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/-_sfs-%s/%s" %
-                   parts['fsnr'].replace(":", "-"))
+            ret.append("http://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/-_sfs-%s/#%s" %
+                       (parts['fsnr'].replace(":", "-"), frag))
         else:
-            yield None
+            ret.append(None)
+    return ret

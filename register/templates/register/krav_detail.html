@@ -30,7 +30,7 @@
 	<strong title="{{field.name}}">{{ object|verbose_name:fieldname }}</strong><br>
 	<small>{{ object|help_text:fieldname }}</small>
       </td>
-      <td>{{ object|get_value:fieldname }}</td>
+      <td>{{ object|get_value:fieldname|safe }}</td>
       <td>
       {% if validation_errors|getitem:fieldname %}
 	<p class="alert alert-danger">
