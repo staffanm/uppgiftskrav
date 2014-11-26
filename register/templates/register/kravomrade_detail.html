@@ -1,0 +1,20 @@
+{% extends "register/detail_generic.html" %}
+
+{% block content %}
+
+<h3>Används i {{ object.krav_set.count }} krav</h3>
+<p><b>{{ object.myndighet }}</b></p>
+<blockquote>{{ object.beskrivning }}</blockquote>
+<ul>
+{% for krav in object.krav_set.all %}
+<li>
+  {% if not krav.valid %}
+     <span style="color: red" class="glyphicon glyphicon-remove"></span>
+  {% endif %}
+
+  <a href="{{krav.get_absolute_url}}">{{krav}}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}
+
