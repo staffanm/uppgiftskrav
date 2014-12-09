@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 
 DEFAULT_PERMS = [["add_krav", "register", "krav"],
                  ["change_krav", "register", "krav"],
-                 ["delete_krav", "register", "krav"],
+                 # ["delete_krav", "register", "krav"],
                  ["add_verksamhetsomrade", "register", "verksamhetsomrade"],
                  ["change_verksamhetsomrade", "register", "verksamhetsomrade"],
                  ["delete_verksamhetsomrade", "register", "verksamhetsomrade"],

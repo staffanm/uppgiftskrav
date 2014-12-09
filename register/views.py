@@ -142,7 +142,10 @@ class KravDetail(MyDetailView):
     def get_context_data(self, **kwargs):
         context = super(KravDetail, self).get_context_data(**kwargs)
         try:
-            self.object.full_clean()
+            # this might signal an error in one of the fields that is
+            # not shown (nor editable) such as "ursprung". Avoid
+            # flagging these for the time being.
+            # self.object.full_clean()
             context['validation_errors'] = {}
         except ValidationError as e:
             context['validation_errors'] = e.message_dict

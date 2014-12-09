@@ -635,7 +635,11 @@ class Krav(models.Model):
 
     def valid(self):
         try:
-            self.full_clean()
+            # This might signal an error in a imported, non-editable
+            # field such as "ursprung". Avoid looking for these for
+            # the time being.
+            # 
+            # self.full_clean()
             self._basic_validation()
             return True
         except ValidationError:
@@ -694,7 +698,7 @@ class Krav(models.Model):
     class Meta():
         verbose_name_plural = "Krav"
         ordering = ["id"]
-    
+
 
 # these two models shoud not have managers, or any entries in admin or
 # similar -- they're just a way to have Krav.lank_till_blankett and
@@ -702,13 +706,16 @@ class Krav(models.Model):
 class BlankettURL(models.Model):
     url = models.URLField()
     krav = models.ForeignKey(Krav)
+
     class Meta():
         verbose_name = "Blankettlänk"
         verbose_name_plural = "Blankettlänkar"
 
+
 class EtjanstURL(models.Model):
     url = models.URLField()
     krav = models.ForeignKey(Krav)
+
     class Meta():
         verbose_name = "Etjänstlänk"
         verbose_name_plural = "Etjänstlänkar"
