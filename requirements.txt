@@ -18,3 +18,5 @@ static==1.1.0
 static3==0.5.1
 urwid==1.2.2
 wsgiref==0.1.2
+django-report-builder==2.0.1
+django-report-utils==0.2.6

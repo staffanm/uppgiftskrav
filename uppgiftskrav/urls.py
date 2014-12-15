@@ -12,6 +12,7 @@ urlpatterns = patterns('',
                        url(r'^$', RedirectView.as_view(url="/db/")),
                        url(r'^db/', include('register.urls', namespace='register')),
                        url(r'^admin/', include(admin_site.urls)),
+                       url(r'^report_builder/', include('report_builder.urls'))
                        # url(r'^admin/', include("massadmin.urls"))
                        )
 

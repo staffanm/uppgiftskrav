@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'register',
     'bootstrap3',
+    'report_builder',
 )
 
 MIDDLEWARE_CLASSES = (
