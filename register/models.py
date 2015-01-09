@@ -293,10 +293,10 @@ class Krav(models.Model):
 
     kortbeskrivning = tf("Kort beskrivning av uppgiftskravet",
                          blank=True,
-                         max_length=300,
+                         max_length=600,
                          help_text="""Beskriv kortfattat vad uppgiftskravet
                          avser så att företag förstår vad som ska
-                         göras och om det berör dem. Max 300 tecken
+                         göras och om det berör dem. Max 600 tecken
                          inkl mellanslag.""")
     lank_till_info = url("Länk till information om uppgiftskravet",
                          max_length=1000,  # myndigheters URL:ar...
